@@ -5,20 +5,30 @@ param(
     [Parameter(Mandatory)]
     [string]$Subject,
 
-    [Parameter(Mandatory)]
-    [string]$Body,
+    [string]$Body     = "",
+    [string]$BodyFile = "",
 
     [string]$CC  = "",
     [string]$BCC = ""
 )
 
 try {
-    $outlook = New-Object -ComObject Outlook.Application -ErrorAction Stop
-    $mail = $outlook.CreateItem(0)  # olMailItem
+    if (-not $Body -and -not $BodyFile) {
+        throw "Provide -Body or -BodyFile."
+    }
 
-    $mail.To      = $To
-    $mail.Subject = $Subject
-    $mail.Body    = $Body
+    $htmlContent = if ($BodyFile) {
+        Get-Content -Path $BodyFile -Raw -Encoding UTF8
+    } else {
+        $Body
+    }
+
+    $outlook = New-Object -ComObject Outlook.Application -ErrorAction Stop
+    $mail    = $outlook.CreateItem(0)  # olMailItem
+
+    $mail.To       = $To
+    $mail.Subject  = $Subject
+    $mail.HTMLBody = $htmlContent
     if ($CC)  { $mail.CC  = $CC  }
     if ($BCC) { $mail.BCC = $BCC }
 
