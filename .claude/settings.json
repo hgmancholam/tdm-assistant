@@ -9,5 +9,18 @@
       "Bash(python .agents/skills/memory/memory.py)",
       "Bash(python .agents/skills/*/script.py)"
     ]
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pwsh -File .agents/skills/memory/end-session.ps1"
+          }
+        ]
+      }
+    ]
   }
 }
