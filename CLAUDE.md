@@ -191,6 +191,19 @@ Install dependencies: `pip install -r .agents/skills/analytics/requirements.txt`
 
 PowerShell stays as the tool for: Outlook COM, Windows Task Scheduler, file I/O, and all native Windows automation.
 
+## Memory Architecture
+
+The assistant uses a 4-layer memory model. All reads and writes go through `.agents/skills/memory/memory.py` — no other skill accesses memory files directly. This abstraction allows migrating to a database backend by changing only the memory service.
+
+| Layer | Files | Updated |
+|-------|-------|---------|
+| 1 — Permanent | `user.profile.md` | Onboarding + explicit changes |
+| 2 — Compressed | `projects/CODE/context.md`, `memory/weekly/` | Weekly + on sprint close |
+| 3 — Recent | `projects/CODE/logs/`, `reminders.json`, `priorities.json` | Daily / on-demand |
+| 4 — Session | `memory/last-session.md` (auto-archived to `memory/sessions/`) | End of each session |
+
+Backend is configured via `MEMORY_BACKEND` env var (default: `file`). Future options: `sqlite`, `postgresql`, `mongodb`, `vector`.
+
 ## Skill Registry
 
 `skill-registry.json` at the project root is the inventory of all skills. Updated automatically by `/new-skill` every time a new capability is created.

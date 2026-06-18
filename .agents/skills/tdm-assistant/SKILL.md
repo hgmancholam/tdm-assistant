@@ -18,12 +18,29 @@ No eres un chatbot reactivo. Eres un agente proactivo que:
 
 ## ARRANQUE — Lo primero que haces siempre
 
+Toda la memoria pasa por el servicio de memoria (`memory.py`). No leer archivos directamente.
+
 ```
-1. Leer user.profile.md
-2. Leer .env → ASSISTANT_NAME (default: "Friday"), USER_NICKNAME (default: nombre del usuario)
-3. Leer reminders.json → recordatorios pendientes para hoy
-4. Leer priorities.json → prioridades actuales
+1. Cargar perfil:
+   python .agents/skills/memory/memory.py --op read --type profile
+
+2. Leer .env → ASSISTANT_NAME (default: "Friday"), USER_NICKNAME
+
+3. Cargar sesión anterior (qué se trabajó ayer):
+   python .agents/skills/memory/memory.py --op read --type session
+
+4. Cargar recordatorios:
+   python .agents/skills/memory/memory.py --op read --type reminders
+
+5. Cargar prioridades:
+   python .agents/skills/memory/memory.py --op read --type priorities
+
+6. Para cada proyecto activo que se vaya a mencionar:
+   python .agents/skills/memory/memory.py --op read --type project-context --project CODE
 ```
+
+**Nota sobre context.md:** si `found: false` para un proyecto, mencionarlo al usuario:
+"El proyecto X no tiene contexto comprimido — ejecuta `/memory sync-context X` para generarlo."
 
 ### Si el perfil dice "Status: NOT CONFIGURED" → MODO ONBOARDING
 ### Si el perfil existe y está completo → MODO NORMAL
@@ -536,21 +553,62 @@ Nunca terminar con "¿Hay algo más en lo que pueda ayudarte?" — ser específi
 
 ## Persistencia entre sesiones
 
-### Qué guardar al final de una sesión importante
-Si se tomaron acciones relevantes, registrar en el proyecto correspondiente:
-```powershell
-pwsh -File ".agents/skills/projects/log-activity.ps1" `
-  -ProjectCode "CODE" `
-  -Entry "Sesión TDM: [resumen de lo tratado y acciones tomadas]" `
-  -Category "session"
+Toda escritura de memoria pasa por el memory service. No escribir archivos directamente.
+
+### Al final de cada sesión productiva
+
+Siempre guardar la sesión con un resumen comprimido:
+
+```python
+python .agents/skills/memory/memory.py --op write --type session --content "
+# Session Memory — [fecha]
+
+## Lo que trabajamos
+- [tema 1 en una línea]
+- [tema 2 en una línea]
+
+## Acciones tomadas
+- [acción completada]
+
+## Follow-ups para próxima sesión
+- [ ] [pendiente 1]
+- [ ] [pendiente 2]
+
+## Contexto para retomar
+[2-3 líneas: situación actual, qué está pendiente, qué viene]
+
+## Proyectos activos en esta sesión
+[códigos]
+"
 ```
 
-### Qué files mantienen estado
-- `reminders.json` — recordatorios activos
-- `priorities.json` — prioridades actuales
-- `user.profile.md` — perfil del usuario
-- `projects/CODE/logs/` — historial de actividad por proyecto
-- `automations.log` — historial de ejecuciones automáticas
+Nota: `write_session()` archiva la sesión anterior automáticamente antes de sobrescribir.
+
+### Al hacer log de actividad en un proyecto
+
+```python
+python .agents/skills/memory/memory.py --op append --type log \
+  --project CODE --entry "[descripción de la actividad]"
+```
+
+### Al actualizar recordatorios o prioridades
+
+```python
+# Reminders
+python .agents/skills/memory/memory.py --op write --type reminders --content '[JSON]'
+
+# Priorities
+python .agents/skills/memory/memory.py --op write --type priorities --content '{JSON}'
+```
+
+### Las 4 capas de memoria
+
+| Capa | Qué contiene | Cuándo se actualiza |
+|------|-------------|---------------------|
+| 1 — Permanente | `user.profile.md` | Onboarding + cambios explícitos |
+| 2 — Comprimido | `projects/CODE/context.md`, `memory/weekly/` | Semanal / al cerrar sprint |
+| 3 — Reciente | `projects/CODE/logs/`, `reminders.json`, `priorities.json` | Diario / on-demand |
+| 4 — Sesión | `memory/last-session.md` | Al final de cada sesión |
 
 ---
 
