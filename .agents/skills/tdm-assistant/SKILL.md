@@ -478,6 +478,10 @@ Regla: si existe un skill especializado para la tarea → cargarlo y ejecutarlo.
 | "estimación" / "estima el esfuerzo" / "three-point" | COMMAND | `.claude/commands/time-estimate.md` |
 | "estimación de horas" / "horas-hombre" / "cuánto esfuerzo" / "PERT" / "Monte Carlo" / "FPA" / "story points a horas" / "precio fijo" / "justifica el estimado" | HOURS_ESTIMATOR | `.agents/skills/hours-estimator/SKILL.md` |
 | "KPIs" / "indicadores" / "medir la salud" / "dashboard de métricas" / "OKRs" / "DORA metrics" / "salud cuantitativa" / "métricas del proyecto" / "alertas tempranas" / "CPI" / "SPI" (en contexto de métricas, no de EVM presupuestal) | KPI_ADVISOR | `.agents/skills/kpi-advisor/SKILL.md` |
+| "discovery" / "inception" / "workshop con el cliente" / "definir el alcance" / "in-scope out-scope" / "qué está dentro del scope" / "supuestos del proyecto" / "problema de negocio del cliente" / "preparar el discovery" / "facilitar el inception" | DISCOVERY | `.agents/skills/discovery/SKILL.md` |
+| "composición del equipo" / "squad design" / "staffing" / "cuántas personas necesito" / "qué roles necesito" / "costo del equipo" / "capacity del squad" / "backfill" / "plan de incorporación" | STAFFING_PLAN | `.agents/skills/staffing-plan/SKILL.md` |
+| "propuesta" / "proposal" / "SOW" / "statement of work" / "genera la propuesta" / "documento para el cliente" / "cotización formal" / "executive summary para el cliente" | PROPOSAL | `.agents/skills/proposal/SKILL.md` |
+| "1:1" / "one on one" / "feedback a [nombre]" / "burnout" / "el equipo está quemado" / "plan de desarrollo" / "IDP" / "salud del equipo" / "conflicto en el squad" / "cómo hablarle a [nombre]" / "bajo desempeño" | TEAM_COACH | `.agents/skills/team-coach/SKILL.md` |
 | "stakeholders" / "actualización a clientes" / "stakeholder update" | COMMAND | `.claude/commands/stakeholder-update.md` |
 | "retrospectiva" / "retro" / "qué salió mal" | COMMAND | `.claude/commands/retrospective.md` |
 | "root cause" / "por qué falló" / "análisis del problema" | COMMAND | `.claude/commands/problem-solve.md` |
@@ -974,6 +978,92 @@ Triggers que activan este modo:
 - "cómo diseñamos los evals para este sistema"
 - "hay riesgos de seguridad en nuestro sistema de IA"
 - "compara LangChain vs LlamaIndex para [caso de uso]"
+
+---
+
+## MODO DISCOVERY — Discovery e Inception consultivo
+
+Cuando el usuario pide preparar o facilitar un discovery, definir el alcance, o estructurar un problema de cliente:
+
+1. Leer `.agents/skills/discovery/SKILL.md` para cargar el framework completo.
+2. Identificar la acción: `prepare`, `facilitate`, `document`, o `review`.
+3. Continuar exactamente como define ese SKILL.md (4 fases: preparación, facilitación, output, handoff).
+
+Triggers que activan este modo:
+- "Prepara el discovery para el cliente X"
+- "Acabo de salir del workshop — ayúdame a estructurar las notas"
+- "Necesito definir el scope antes de estimar"
+- "¿Qué está dentro y qué está fuera del alcance de este proyecto?"
+- "Genera el documento de discovery"
+- "Revisa si nuestro discovery tiene todo lo que necesita"
+
+Al finalizar, siempre ofrecer el handoff a los siguientes pasos:
+→ `/sw-architect` para diseño de arquitectura de alto nivel
+→ `/hours-estimator` para estimación de esfuerzo
+→ `/staffing-plan` para composición del squad
+→ `/proposal` para generar el SOW completo
+
+---
+
+## MODO STAFFING_PLAN — Diseño de squad
+
+Cuando el usuario necesita estructurar o evaluar la composición de un equipo:
+
+1. Leer `.agents/skills/staffing-plan/SKILL.md` para cargar el framework completo.
+2. Identificar la acción: diseño nuevo, optimización, backfill, o cálculo de capacity.
+3. Continuar exactamente como define ese SKILL.md (7 pasos: inputs → roles → seniority → timeline → capacity → costo → riesgos).
+
+Triggers que activan este modo:
+- "¿Cuántas personas necesito para este proyecto?"
+- "Diseña el squad para [proyecto/scope]"
+- "¿Cuánto cuesta el equipo para X meses?"
+- "Calcula la capacity real del squad de ALPHA"
+- "Uno de los seniors del equipo se va — ¿cómo hacemos el backfill?"
+- "Optimiza la composición del equipo de BETA"
+
+---
+
+## MODO PROPOSAL — Generación de propuesta/SOW
+
+Cuando el usuario necesita generar o actualizar una propuesta formal para un cliente:
+
+1. Leer `.agents/skills/proposal/SKILL.md` para cargar el template y proceso completos.
+2. Identificar la acción: `new`, `update`, `review`, o `exec-summary`.
+3. Verificar qué inputs ya existen (discovery, estimado, staffing) antes de generar.
+4. Continuar exactamente como define ese SKILL.md.
+
+Triggers que activan este modo:
+- "Genera la propuesta para el cliente X"
+- "Necesito el SOW para [proyecto]"
+- "Genera solo el executive summary para la reunión de mañana"
+- "Actualiza la sección de estimación con el nuevo estimado"
+- "Revisa la propuesta — ¿está lista para enviar?"
+- "El cliente aprobó el discovery — genera el documento formal"
+
+Prerequisitos recomendados antes de generar:
+- Discovery completado (`/discovery document`)
+- Estimado de esfuerzo (`/hours-estimator`)
+- Composición del squad (`/staffing-plan`)
+- Si no están completos: generar la propuesta con secciones marcadas como `[PENDIENTE]`
+
+---
+
+## MODO TEAM_COACH — Liderazgo de personas
+
+Cuando el usuario necesita apoyo para gestionar personas en su squad:
+
+1. Leer `.agents/skills/team-coach/SKILL.md` para cargar todos los frameworks completos.
+2. Identificar la acción: `1on1`, `feedback`, `burnout`, `idp`, `health`, o `conflict`.
+3. Continuar exactamente como define ese SKILL.md.
+
+Triggers que activan este modo:
+- "Prepara mi 1:1 con [nombre]"
+- "Necesito dar feedback a [nombre] sobre [situación]"
+- "Noto que [nombre] parece quemado/a — ¿qué hago?"
+- "Crea el IDP para [nombre]"
+- "¿Cómo está la salud del equipo de ALPHA?"
+- "Hay un conflicto entre [persona A] y [persona B]"
+- "¿Cómo le digo a [nombre] que su desempeño está por debajo?"
 
 ---
 

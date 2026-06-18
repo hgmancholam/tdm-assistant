@@ -706,7 +706,196 @@ Update my profile — I now also manage the GAMMA project and my new client cont
 
 ---
 
-## 12. Document Import
+## 12. Discovery & Inception
+
+*Expert consultive discovery for pre-sales and project inception. Structures client problems into clear scope, assumptions, and success criteria before estimating or proposing.*
+*Use `/discovery` directly or let `/tdm` route naturally with "discovery", "inception", "define the scope".*
+
+---
+
+**#101 — Prepare a discovery workshop**
+```
+/discovery prepare "Logistics company wants a shipment tracking portal — workshop is Monday at 10am"
+```
+> Generates: full workshop agenda (blocks: problem framing, user discovery, solution, scope boundary, risks), stakeholder mapping template, question guide for each block. Ready to walk into the session.
+
+---
+
+**#102 — Structure raw workshop notes into a discovery document**
+```
+/discovery facilitate "New client"
+[paste raw notes from the session]
+```
+> Processes your raw notes and generates the structured Discovery Output: Problem Statement, quantified impact, In-Scope / Out-of-Scope, critical assumptions with consequences, dependencies, risks, and next steps.
+
+---
+
+**#103 — Define scope before estimating**
+```
+The client wants to build an HR self-service portal. Before we estimate, help me define what's in and out of scope.
+```
+> Routes to Discovery. Walks through scope boundary questions, generates a scope statement with In-Scope items, Out-of-Scope items, and the critical assumptions the estimate will depend on.
+
+---
+
+**#104 — Audit an existing discovery for gaps**
+```
+/discovery review ALPHA
+```
+> Checks: Is there a single-sentence Problem Statement? Is In-Scope specific (not "reporting module" but actual features)? Does Out-of-Scope exist? Does each assumption have a consequence? Are success criteria measurable? Flags missing sections and rates discovery readiness.
+
+---
+
+**#105 — Generate a formal discovery document**
+```
+/discovery document "Healthcare client"
+```
+> Asks for information block by block (problem, users, solution, scope, risks) and generates the complete Discovery Output document ready to share with the client or use as the base for the proposal.
+
+---
+
+## 13. Staffing & Squad Design
+
+*Expert squad composition for project proposals and ongoing optimization. Translates scope into team structure, capacity, and cost.*
+*Use `/staffing-plan` directly or let `/tdm` route naturally with "squad", "staffing", "team composition", "how many people".*
+
+---
+
+**#106 — Design a squad for a new project**
+```
+/staffing-plan "E-commerce platform — React frontend, .NET backend, Azure cloud, 5-month timeline, fixed price, client has no embedded PO"
+```
+> Recommends: roles and seniority mix, FTE per role, onboarding timeline (who joins when), real sprint capacity with the 0.68 effectiveness factor, cost estimate ranges, and staffing risks.
+
+---
+
+**#107 — Calculate real sprint capacity**
+```
+/staffing-plan capacity ALPHA
+```
+> Takes the current squad composition for ALPHA, applies the capacity model (nominal hours × 0.68 for meetings, code review, admin), and gives the real deliverable hours per sprint at different ramp-up stages.
+
+---
+
+**#108 — Plan a backfill when someone leaves**
+```
+/staffing-plan backfill ALPHA "Senior Backend Developer is leaving in 3 weeks"
+```
+> Identifies: skills that must be replaced, interim coverage options, ramp-up cost of the new hire, and the onboarding timeline. Flags if there's a single point of failure risk during the transition.
+
+---
+
+**#109 — Audit squad balance for an existing team**
+```
+/staffing-plan optimize BETA
+```
+> Reviews the current BETA squad for: seniority imbalance, missing critical roles, TDM overload, junior-to-senior ratio vs. mentoring capacity. Returns a recommendation with justification.
+
+---
+
+## 14. Proposals & SOW
+
+*Full proposal and Statement of Work generator. Orchestrates discovery + architecture + staffing + estimation into a client-ready document.*
+*Use `/proposal` directly or let `/tdm` route naturally with "proposal", "SOW", "quote for the client", "generate the document".*
+
+---
+
+**#110 — Generate a full proposal from existing inputs**
+```
+/proposal new "Healthcare onboarding portal"
+```
+> Checks for existing discovery output, estimation, and staffing plan. Generates the complete SOW: Executive Summary, Problem Understanding, Solution, Scope, Methodology, Team, Roadmap, Effort & Cost, Risks, and Commercial Terms.
+
+---
+
+**#111 — Generate only the Executive Summary for a pre-meeting**
+```
+/proposal exec-summary "Healthcare onboarding portal"
+```
+> Generates 4 paragraphs readable in 90 seconds by a CEO: the problem (in the client's words), the solution, the quantified value delivered, and the investment + why us. No technical jargon.
+
+---
+
+**#112 — Update the estimate section after a scope change**
+```
+/proposal update "Healthcare portal" estimate
+```
+> Replaces the Effort & Cost section with the new estimates from `/hours-estimator`, recalculates the P80 commitment, and flags if the roadmap timeline needs adjustment.
+
+---
+
+**#113 — Audit a proposal before sending**
+```
+/proposal review "Healthcare portal"
+```
+> Checks coherence: does scope match the estimate? Does the squad cover the timeline? Are assumptions documented with consequences? Does the Executive Summary avoid tech jargon? Returns a checklist with pass/fail per item and a "Ready to send: YES/NO" verdict.
+
+---
+
+**#114 — Generate a quick initial proposal for pre-sales**
+```
+The prospect wants a rough proposal before we do the full discovery. Generate a preliminary one.
+```
+> Generates a lightweight version: Executive Summary + Scope (with clear "subject to discovery" disclaimer) + Rough Estimate + Team Profile + Timeline. Marks everything as "Preliminary — subject to formal discovery and detailed estimation."
+
+---
+
+## 15. Team Coaching & People Leadership
+
+*Expert coach for software squads. 1:1 facilitation, SBI feedback, burnout detection, Individual Development Plans, and squad health diagnostics.*
+*Use `/team-coach` directly or let `/tdm` route naturally with "1:1", "feedback", "burnout", "IDP", "squad health".*
+
+---
+
+**#115 — Prepare a 1:1 with a team member**
+```
+/team-coach 1on1 "Sarah — she's been quiet in standups lately and missed a PR review deadline last sprint"
+```
+> Generates: suggested agenda (check-in / topics / feedback / close), specific questions based on the context, review of what was committed in the last session, and signals to watch during the conversation.
+
+---
+
+**#116 — Draft feedback using the SBI model**
+```
+/team-coach feedback "John — in the last sprint planning he estimated the auth module without asking for acceptance criteria, which led to a full rewrite in sprint 3"
+```
+> Classifies as corrective feedback. Generates a structured SBI draft (Situation → Behavior → Impact → What next), plus a section on how to respond if John pushes back or gets defensive.
+
+---
+
+**#117 — Assess burnout signals and get a response plan**
+```
+/team-coach burnout "Miguel — working evenings, monosyllabic in standups, stopped proposing improvements. Been going on for 2 weeks."
+```
+> Maps signals to the 🟡 Attention level. Returns: what to say to open the conversation, which questions to ask, what actions to consider (workload reduction, PTO, etc.), and a follow-up schedule.
+
+---
+
+**#118 — Create an Individual Development Plan**
+```
+/team-coach idp "Ana — Mid Backend Developer, wants to become a Tech Lead in 12 months. Strong in implementation, needs to grow in architecture decisions and client communication."
+```
+> Generates a structured IDP with: current strengths, 2-3 development areas with measurable objectives, specific challenges to assign for exposure, support needed from the TDM, and a quarterly follow-up plan.
+
+---
+
+**#119 — Run a squad health diagnostic**
+```
+/team-coach health ALPHA
+```
+> Evaluates 5 dimensions: Psychological Safety, Role Clarity, Workload, Growth, Leadership Trust. Returns a RAG scorecard per dimension with specific signals observed, the anonymous 5-question survey template to validate the diagnosis, and priority actions for the red/yellow dimensions.
+
+---
+
+**#120 — Get an intervention plan for a team conflict**
+```
+/team-coach conflict "Two senior developers on BETA have been arguing about the architecture for 3 sprints. It's slowing down decisions and affecting the rest of the team."
+```
+> Classifies as a technical conflict. Applies minimum-intervention principle: recommends facilitating an ADR (Architecture Decision Record) with explicit criteria, gives the Tech Lead the final call with required documentation. Provides the conversation script for the 3-way meeting.
+
+---
+
+## 16. Document Import
 
 *Import any document into a project folder. Extraction is done without AI — Python libraries handle PDF, Word, Excel, PowerPoint, and CSV directly.*
 *The assistant only calls AI if the document is a scanned PDF with no extractable text.*
@@ -769,7 +958,7 @@ Import C:\Users\Giovanny\Downloads\signed-contract.pdf into ALPHA
 
 ---
 
-## 13. Project Management Process
+## 18. Project Management Process
 
 *Commands that handle PM artifacts — retrospectives, decisions, estimates. Ask `/tdm` directly or invoke the command.*
 
@@ -799,7 +988,7 @@ Estimate the effort for adding a real-time notification module to ALPHA. It wasn
 
 ---
 
-## 14. Effort Estimation
+## 19. Effort Estimation
 
 *Expert man-hour estimation using industry techniques — PERT, Monte Carlo, FPA, Story Points, Reference Class Forecasting.*
 *Returns confidence ranges (P50/P80/P90), not a single number. Use `/hours-estimator` or let `/tdm` route naturally.*
@@ -854,7 +1043,7 @@ The ALPHA backlog has 180 story points remaining. The team's average velocity is
 
 ---
 
-## 15. KPI Design & Project Health
+## 20. KPI Design & Project Health
 
 *Expert KPI framework design and quantitative health diagnosis — DORA, EVM, OKRs, Flow metrics, Agile health.*
 *Use `/kpi-advisor` directly or let `/tdm` route naturally with "KPIs", "metrics", "health", "indicators".*
@@ -965,6 +1154,24 @@ BETA has been running for 3 months but we've never formally measured anything. W
 | Import a document into a project | "Import [file] into [PROJECT]" | `/import-doc [CODE]` |
 | List imported documents | "List all documents in [PROJECT]" | `/import-doc list [CODE]` |
 | Add a new capability | "I need a script that does [description]" | `/new-skill` |
+| Prepare a discovery workshop | "Prepare the discovery workshop for [client]" | `/discovery prepare "[client]"` |
+| Facilitate / structure workshop notes | "Here are my raw notes from the discovery session: [notes]" | `/discovery facilitate "[project]"` |
+| Generate discovery document | "Generate the discovery output document for [project]" | `/discovery document "[project]"` |
+| Audit an existing discovery | "Is our discovery for [project] complete?" | `/discovery review [CODE]` |
+| Design a squad for a new project | "Design the squad for [scope/stack/duration]" | `/staffing-plan "[scope description]"` |
+| Calculate real sprint capacity | "What's the real capacity of the ALPHA squad per sprint?" | `/staffing-plan capacity [CODE]` |
+| Plan a backfill | "A senior is leaving in 3 weeks — plan the backfill" | `/staffing-plan backfill [CODE] "[role]"` |
+| Optimize existing team | "Audit the BETA squad composition" | `/staffing-plan optimize [CODE]` |
+| Generate full proposal / SOW | "Generate the proposal for [project]" | `/proposal new "[project]"` |
+| Generate executive summary only | "Generate only the exec summary for tomorrow's meeting" | `/proposal exec-summary "[project]"` |
+| Update proposal section | "Update the estimate section with the new numbers" | `/proposal update "[project]" estimate` |
+| Audit proposal readiness | "Is the proposal ready to send?" | `/proposal review "[project]"` |
+| Prepare a 1:1 | "Prepare my 1:1 with [name]" | `/team-coach 1on1 "[name]"` |
+| Draft SBI feedback | "Help me give feedback to [name] about [situation]" | `/team-coach feedback "[name] — [situation]"` |
+| Assess burnout and get a plan | "I think [name] is burning out — what do I do?" | `/team-coach burnout "[name] — [signals]"` |
+| Create an Individual Development Plan | "Create an IDP for [name]" | `/team-coach idp "[name] — [context]"` |
+| Squad health diagnostic | "How healthy is the ALPHA team?" | `/team-coach health [CODE]` |
+| Conflict intervention | "There's a conflict between [A] and [B] — help me intervene" | `/team-coach conflict "[description]"` |
 
 ---
 

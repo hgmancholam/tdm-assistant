@@ -20,6 +20,10 @@ A Claude Code-powered personal assistant for Technical Delivery Managers and Pro
 | **Estimation** | Man-hour estimation with PERT, Monte Carlo, FPA, Story Points — confidence ranges and risk-adjusted buffers |
 | **KPIs & Health** | KPI framework design, quantitative project health diagnosis, DORA metrics, OKRs, early-warning combos |
 | **Architecture** | AI architecture decisions, software architecture reviews, ADRs, threat models |
+| **Discovery & Inception** | Consultive discovery workshops, scope definition (In/Out/Assumptions), problem framing, handoff to estimation and proposal |
+| **Staffing & Squad Design** | Squad composition, seniority ratios, onboarding timeline, real capacity calculation, cost estimate |
+| **Proposals & SOW** | Full Statement of Work generation — orchestrates discovery + architecture + staffing + estimation into a client-ready document |
+| **People Leadership** | Structured 1:1s, SBI feedback, burnout detection, Individual Development Plans, squad health diagnostics |
 | **Research** | Web search, multi-source research, document Q&A, page fetch |
 | **Prompt Engineering** | Write and optimize prompts with the CRATE framework |
 | **Token Optimization** | Compressed communication mode (~65% fewer output tokens) via `/caveman` |
@@ -188,6 +192,15 @@ The onboarding takes about 5 minutes and only runs once.
 | `/project-plan CODE` | Generate project plan with WBS and milestones |
 | `/stakeholder-update CODE` | Draft stakeholder communications |
 
+### Pre-sales & Inception
+
+| Command | What it does |
+|---------|-------------|
+| `/discovery prepare\|facilitate\|document\|review [project]` | Consultive discovery workshop — problem framing, scope boundary (In/Out/Assumptions), risk identification. Output feeds estimation, architecture, and proposal |
+| `/staffing-plan [scope]` | Squad composition designer — roles, seniority ratios, onboarding timeline, real sprint capacity, cost estimate |
+| `/staffing-plan optimize\|capacity\|backfill CODE` | Audit existing squad, calculate capacity, plan backfill for departing members |
+| `/proposal new\|update\|review\|exec-summary [project]` | Full SOW generator — orchestrates discovery + architecture + staffing + estimation into a client-ready proposal |
+
 ### Analysis & Architecture
 
 | Command | What it does |
@@ -197,6 +210,7 @@ The onboarding takes about 5 minutes and only runs once.
 | `/kpi-advisor define\|health\|alert\|okr CODE` | Expert KPI design and quantitative health diagnosis — DORA, EVM, OKRs, early-warning combos |
 | `/ai-architect [action] [topic]` | AI & agentic architecture — evaluate, design, decide, compare, evals, security |
 | `/sw-architect [action] [topic]` | Software architecture — evaluate, design, ADR, debt, security, migrate |
+| `/team-coach 1on1\|feedback\|burnout\|idp\|health\|conflict [name or CODE]` | People leadership — structured 1:1s, SBI feedback, burnout detection, IDPs, squad health diagnostic |
 | `/prompt-help [task]` | Write or optimize any prompt using the CRATE framework |
 
 ### Research & Intelligence
@@ -248,6 +262,10 @@ The onboarding takes about 5 minutes and only runs once.
   agile-advisor/          ← Agile Coach + TDM 6-dimension analysis framework
   hours-estimator/        ← Expert man-hour estimation (PERT, Monte Carlo, FPA, Story Points)
   kpi-advisor/            ← KPI design and quantitative project health (DORA, EVM, OKRs, Flow)
+  discovery/              ← Consultive discovery & inception facilitator (scope, assumptions, handoff)
+  staffing-plan/          ← Squad composition designer (roles, seniority, capacity, cost)
+  proposal/               ← Proposal & SOW generator (orchestrates all pre-sales outputs)
+  team-coach/             ← People leadership: 1:1s, SBI feedback, burnout detection, IDPs
   ai-architect/           ← AI & agentic architecture expert
   sw-architect/           ← Software architecture expert (ADRs, threat models, migrations)
   prompt-engineer/        ← Prompt optimization with CRATE framework
