@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pwsh -File .agents/skills/outlook/*.ps1)",
+      "Bash(pwsh -File .agents/skills/projects/*.ps1)",
+      "Bash(pwsh -File .agents/skills/runner.ps1)",
+      "Bash(pwsh -File .agents/skills/scheduler.ps1)",
+      "Bash(python .agents/skills/analytics/*.py)",
+      "Bash(python .agents/skills/*/script.py)"
+    ]
+  }
+}
+

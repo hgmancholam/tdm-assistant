@@ -1,0 +1,100 @@
+{
+  "project": {
+    "name": "",
+    "code": "",
+    "description": "",
+    "type": "",
+    "status": "active",
+    "phase": "",
+    "client": "",
+    "startDate": "",
+    "targetEndDate": "",
+    "actualEndDate": ""
+  },
+  "ado": {
+    "org": "",
+    "project": "",
+    "areaPath": "",
+    "teamName": "",
+    "pat": "",
+    "boardUrl": "",
+    "backlogUrl": ""
+  },
+  "team": [
+    {
+      "name": "",
+      "role": "",
+      "email": "",
+      "phone": "",
+      "organization": "",
+      "isPrimary": false
+    }
+  ],
+  "stakeholders": [
+    {
+      "name": "",
+      "role": "",
+      "email": "",
+      "organization": "",
+      "reportingLevel": ""
+    }
+  ],
+  "communication": {
+    "teamsChannel": "",
+    "teamsWebhook": "",
+    "distributionList": "",
+    "statusReportRecipients": []
+  },
+  "cadence": {
+    "sprintLengthDays": 14,
+    "standupTime": "09:00",
+    "standupDays": ["Mon", "Tue", "Wed", "Thu", "Fri"],
+    "retrospectiveCadence": "end-of-sprint",
+    "statusReportDay": "Friday",
+    "statusReportCadence": "weekly"
+  },
+  "budget": {
+    "totalBudget": 0,
+    "currency": "USD",
+    "billingModel": "",
+    "hourlyRate": 0
+  },
+  "links": {
+    "sharepoint": "",
+    "repository": "",
+    "documentation": "",
+    "other": []
+  },
+  "automations": [
+    {
+      "name": "morning-sync",
+      "description": "Sincronización matutina: ADO + emails + calendario del proyecto",
+      "schedule": "0 8 * * 1-5",
+      "task": "morning-sync",
+      "recipients": "me",
+      "enabled": false
+    },
+    {
+      "name": "weekly-report",
+      "description": "Status report semanal enviado a stakeholders",
+      "schedule": "0 17 * * 5",
+      "task": "weekly-report",
+      "recipients": "stakeholders",
+      "enabled": false
+    },
+    {
+      "name": "end-of-day",
+      "description": "Resumen de cierre del día del proyecto",
+      "schedule": "0 18 * * 1-5",
+      "task": "end-of-day",
+      "recipients": "me",
+      "enabled": false
+    }
+  ],
+  "metadata": {
+    "createdDate": "",
+    "lastUpdated": "",
+    "managedBy": "harol.manchola@arroyoconsulting.net",
+    "version": "1.0"
+  }
+}

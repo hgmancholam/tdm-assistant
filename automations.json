@@ -1,0 +1,23 @@
+{
+  "description": "Automatizaciones globales — aplican a todos los proyectos o al asistente en general",
+  "automations": [
+    {
+      "name": "daily-digest",
+      "description": "Resumen diario de todos los proyectos activos enviado a Harol",
+      "schedule": "0 7 * * 1-5",
+      "task": "projects-digest",
+      "scope": "global",
+      "recipients": "me",
+      "enabled": false
+    },
+    {
+      "name": "weekly-all-projects",
+      "description": "Reporte semanal consolidado de todos los proyectos",
+      "schedule": "0 8 * * 5",
+      "task": "projects-weekly",
+      "scope": "global",
+      "recipients": "me",
+      "enabled": false
+    }
+  ]
+}

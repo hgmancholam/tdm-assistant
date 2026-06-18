@@ -1,0 +1,96 @@
+{
+  "version": "1.0",
+  "description": "Registry of all skills in the PersonalAssistant system. Updated automatically by /new-skill.",
+  "skills": [
+    {
+      "name": "get-inbox",
+      "type": "powershell",
+      "path": ".agents/skills/outlook/get-inbox.ps1",
+      "command": "/email-triage",
+      "description": "Get Outlook inbox emails via COM",
+      "createdDate": "2026-06-01",
+      "createdBy": "system"
+    },
+    {
+      "name": "send-email",
+      "type": "powershell",
+      "path": ".agents/skills/outlook/send-email.ps1",
+      "command": "/email-send",
+      "description": "Send email via Outlook COM",
+      "createdDate": "2026-06-01",
+      "createdBy": "system"
+    },
+    {
+      "name": "get-calendar",
+      "type": "powershell",
+      "path": ".agents/skills/outlook/get-calendar.ps1",
+      "command": "/agenda",
+      "description": "Read Outlook calendar via COM",
+      "createdDate": "2026-06-01",
+      "createdBy": "system"
+    },
+    {
+      "name": "create-event",
+      "type": "powershell",
+      "path": ".agents/skills/outlook/create-event.ps1",
+      "command": "/calendar-manage",
+      "description": "Create Outlook calendar event via COM",
+      "createdDate": "2026-06-17",
+      "createdBy": "system"
+    },
+    {
+      "name": "create-recurring-event",
+      "type": "powershell",
+      "path": ".agents/skills/outlook/create-recurring-event.ps1",
+      "command": "/calendar-manage",
+      "description": "Create recurring Outlook calendar event via COM",
+      "createdDate": "2026-06-17",
+      "createdBy": "system"
+    },
+    {
+      "name": "respond-event",
+      "type": "powershell",
+      "path": ".agents/skills/outlook/respond-event.ps1",
+      "command": "/calendar-manage",
+      "description": "Accept/decline/tentative Outlook meeting invitation via COM",
+      "createdDate": "2026-06-17",
+      "createdBy": "system"
+    },
+    {
+      "name": "velocity-chart",
+      "type": "python",
+      "path": ".agents/skills/analytics/velocity_chart.py",
+      "command": null,
+      "description": "Generate sprint velocity and commitment ratio chart (PNG)",
+      "createdDate": "2026-06-17",
+      "createdBy": "system"
+    },
+    {
+      "name": "evm-report",
+      "type": "python",
+      "path": ".agents/skills/analytics/evm_report.py",
+      "command": null,
+      "description": "Calculate EVM metrics (CPI, SPI, EAC, VAC) and generate chart",
+      "createdDate": "2026-06-17",
+      "createdBy": "system"
+    },
+    {
+      "name": "excel-report",
+      "type": "python",
+      "path": ".agents/skills/analytics/excel_report.py",
+      "command": null,
+      "description": "Generate formatted Excel status report with multiple sheets",
+      "createdDate": "2026-06-17",
+      "createdBy": "system"
+    },
+    {
+      "name": "runner-api",
+      "type": "python",
+      "path": ".agents/skills/analytics/runner_api.py",
+      "command": null,
+      "description": "Automation runner using Anthropic SDK (richer alternative to runner.ps1)",
+      "createdDate": "2026-06-17",
+      "createdBy": "system"
+    }
+  ]
+}
