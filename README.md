@@ -17,6 +17,8 @@ A Claude Code-powered personal assistant for Technical Delivery Managers and Pro
 | **Azure DevOps** | Sprint planning, backlog grooming, metrics, board audit, dependency tracking |
 | **PM** | Status reports, risk register, EVM budget review, retrospectives, scope changes |
 | **Analytics** | Velocity charts, EVM calculations, Excel status reports (Python) |
+| **Estimation** | Man-hour estimation with PERT, Monte Carlo, FPA, Story Points — confidence ranges and risk-adjusted buffers |
+| **KPIs & Health** | KPI framework design, quantitative project health diagnosis, DORA metrics, OKRs, early-warning combos |
 | **Architecture** | AI architecture decisions, software architecture reviews, ADRs, threat models |
 | **Research** | Web search, multi-source research, document Q&A, page fetch |
 | **Prompt Engineering** | Write and optimize prompts with the CRATE framework |
@@ -180,7 +182,9 @@ The onboarding takes about 5 minutes and only runs once.
 | `/retrospective CODE` | Agile retrospective facilitation |
 | `/scope-change CODE` | Change request with impact analysis |
 | `/problem-solve` | Root cause analysis and action plan |
-| `/time-estimate` | Three-point estimation |
+| `/time-estimate` | Three-point estimation (quick) |
+| `/hours-estimator [task or CODE]` | Expert man-hour estimation — PERT, Monte Carlo, FPA, Story Points, Reference Class Forecasting. Confidence ranges at P50/P80/P90 with risk-adjusted buffers |
+| `/kpi-advisor define\|health\|alert\|okr CODE` | KPI framework design and quantitative health diagnosis — DORA, EVM, OKRs, Flow metrics, early-warning combos |
 | `/project-plan CODE` | Generate project plan with WBS and milestones |
 | `/stakeholder-update CODE` | Draft stakeholder communications |
 
@@ -189,6 +193,8 @@ The onboarding takes about 5 minutes and only runs once.
 | Command | What it does |
 |---------|-------------|
 | `/agile-advisor CODE [focus]` | Expert agile + TDM analysis across 6 dimensions (delivery, team, risks, stakeholders, process, AI-readiness) |
+| `/hours-estimator [task or CODE]` | Expert effort estimation — PERT, Monte Carlo, FPA, Story Points, Reference Class Forecasting. Returns P50/P80/P90 ranges |
+| `/kpi-advisor define\|health\|alert\|okr CODE` | Expert KPI design and quantitative health diagnosis — DORA, EVM, OKRs, early-warning combos |
 | `/ai-architect [action] [topic]` | AI & agentic architecture — evaluate, design, decide, compare, evals, security |
 | `/sw-architect [action] [topic]` | Software architecture — evaluate, design, ADR, debt, security, migrate |
 | `/prompt-help [task]` | Write or optimize any prompt using the CRATE framework |
@@ -240,6 +246,8 @@ The onboarding takes about 5 minutes and only runs once.
   projects/               ← Project data I/O scripts (PowerShell → JSON)
   analytics/              ← Python: velocity charts, EVM, Excel reports
   agile-advisor/          ← Agile Coach + TDM 6-dimension analysis framework
+  hours-estimator/        ← Expert man-hour estimation (PERT, Monte Carlo, FPA, Story Points)
+  kpi-advisor/            ← KPI design and quantitative project health (DORA, EVM, OKRs, Flow)
   ai-architect/           ← AI & agentic architecture expert
   sw-architect/           ← Software architecture expert (ADRs, threat models, migrations)
   prompt-engineer/        ← Prompt optimization with CRATE framework

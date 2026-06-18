@@ -129,6 +129,24 @@
       "requires": ["pdfplumber", "pypdf", "python-docx", "python-pptx", "openpyxl"],
       "createdDate": "2026-06-18",
       "createdBy": "system"
+    },
+    {
+      "name": "hours-estimator",
+      "type": "skill",
+      "path": ".agents/skills/hours-estimator/SKILL.md",
+      "command": "/hours-estimator",
+      "description": "Expert man-hour estimation — PERT, Bottom-Up, Story Points, FPA, UCP, Monte Carlo, Delphi, Reference Class Forecasting. Returns effort ranges at P50/P80/P90 with risk-adjusted buffers and explicit assumptions.",
+      "createdDate": "2026-06-18",
+      "createdBy": "system"
+    },
+    {
+      "name": "kpi-advisor",
+      "type": "skill",
+      "path": ".agents/skills/kpi-advisor/SKILL.md",
+      "command": "/kpi-advisor",
+      "description": "Expert KPI design and quantitative project health measurement — DORA, EVM, OKRs, Flow metrics, Agile health. Designs indicator frameworks with RAG thresholds and early-warning combos. Diagnoses project health with numbers, not perceptions.",
+      "createdDate": "2026-06-18",
+      "createdBy": "system"
     }
   ]
 }

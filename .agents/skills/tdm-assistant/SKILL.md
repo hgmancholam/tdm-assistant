@@ -476,6 +476,8 @@ Regla: si existe un skill especializado para la tarea → cargarlo y ejecutarlo.
 | "riesgos" / "risk register" / "registro de riesgos" | COMMAND | `.claude/commands/risk-register.md` |
 | "presupuesto" / "EVM" / "budget" / "costo" | COMMAND | `.claude/commands/budget-review.md` |
 | "estimación" / "estima el esfuerzo" / "three-point" | COMMAND | `.claude/commands/time-estimate.md` |
+| "estimación de horas" / "horas-hombre" / "cuánto esfuerzo" / "PERT" / "Monte Carlo" / "FPA" / "story points a horas" / "precio fijo" / "justifica el estimado" | HOURS_ESTIMATOR | `.agents/skills/hours-estimator/SKILL.md` |
+| "KPIs" / "indicadores" / "medir la salud" / "dashboard de métricas" / "OKRs" / "DORA metrics" / "salud cuantitativa" / "métricas del proyecto" / "alertas tempranas" / "CPI" / "SPI" (en contexto de métricas, no de EVM presupuestal) | KPI_ADVISOR | `.agents/skills/kpi-advisor/SKILL.md` |
 | "stakeholders" / "actualización a clientes" / "stakeholder update" | COMMAND | `.claude/commands/stakeholder-update.md` |
 | "retrospectiva" / "retro" / "qué salió mal" | COMMAND | `.claude/commands/retrospective.md` |
 | "root cause" / "por qué falló" / "análisis del problema" | COMMAND | `.claude/commands/problem-solve.md` |

@@ -284,6 +284,61 @@ Identify:
 Format: numbered list, max 2 sentences per item. No jargon.
 ```
 
+### Patrón: Estimación de horas-hombre
+```
+You are a senior effort estimation expert. Estimate the man-hours required for:
+[descripción de la tarea, feature, o proyecto]
+
+Context:
+- Team velocity: [X story points/sprint] (or N/A if unknown)
+- Technology familiarity: [high | medium | low | new]
+- Requirement clarity: [complete | partial | ambiguous]
+- Project phase: [concept | design | implementation | testing]
+
+Apply Three-Point Estimation (PERT) for each sub-task:
+- Decompose into tasks of ≤16 hours each
+- For each: Optimistic, Most Likely, Pessimistic → Expected = (O + 4M + P) / 6
+- Include: testing (20-30%), code review (10-15%), meetings (15%), DevOps (5-10%)
+- Apply complexity multipliers if applicable
+- Calculate P50, P80, and P90 confidence levels
+
+Output:
+1. WBS table with PERT values per sub-task
+2. Summary table: Optimistic / Expected / P80 / P90 in hours and days
+3. Recommended commitment scenario with buffer justification
+4. Explicit assumptions (each with its impact if invalid)
+5. Uncertainty flags (tasks with P/O > 3x)
+
+Do not give a single number. Always give a range.
+Language: English.
+```
+
+### Patrón: Diseño de KPIs para un proyecto
+```
+You are a senior KPI design expert. Define a KPI framework for this project:
+Project: [nombre y descripción breve]
+Business objective: [lo que el cliente/negocio espera lograr]
+Team size: [N people]
+Methodology: [Agile/Scrum | Kanban | Waterfall | Hybrid]
+Has CI/CD: [yes | no]
+
+Design KPIs across 6 categories:
+1. Delivery Performance (SPI, CPI, commitment ratio, spillover, milestone rate)
+2. Quality (defect density, test coverage, bug fix rate)
+3. Flow & Efficiency (cycle time, lead time, WIP, throughput, flow efficiency)
+4. DORA metrics (if CI/CD is active)
+5. Stakeholder alignment (status report cadence, response time, open decisions)
+6. Team health (happiness score, ceremony attendance, retro closure rate)
+
+For each KPI provide: formula, data source, measurement frequency, and RAG thresholds (green/yellow/red).
+Organize into: Tier 1 (executive, max 5), Tier 2 (TDM daily), Tier 3 (internal).
+Identify leading vs lagging indicators.
+Flag any KPI that cannot be measured with current tooling and state how to enable it.
+
+Do not include vanity metrics (lines of code, hours logged, meetings held).
+Language: English.
+```
+
 ---
 
 ## Principios que no negociar

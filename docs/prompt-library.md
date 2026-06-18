@@ -1,6 +1,6 @@
 # TDM Assistant — Prompt Library
 
-> 80 real-world prompts you can use with `/tdm` across your first three months.
+> 100 real-world prompts you can use with `/tdm` across your first three months.
 > All inputs are natural language — no syntax to memorize.
 > Copy them as-is or adapt them to your context.
 
@@ -799,6 +799,124 @@ Estimate the effort for adding a real-time notification module to ALPHA. It wasn
 
 ---
 
+## 14. Effort Estimation
+
+*Expert man-hour estimation using industry techniques — PERT, Monte Carlo, FPA, Story Points, Reference Class Forecasting.*
+*Returns confidence ranges (P50/P80/P90), not a single number. Use `/hours-estimator` or let `/tdm` route naturally.*
+
+---
+
+**#88 — Estimate a new feature from scratch**
+```
+Estimate the effort for adding a real-time notification module to ALPHA. The team knows the stack, but this is a new component. Requirements are partially defined.
+```
+> Applies PERT with Bottom-Up decomposition. Returns: WBS with optimistic/most likely/pessimistic per sub-task, P50/P80/P90 summary, recommended commitment scenario, and explicit assumptions.
+
+---
+
+**#89 — Estimate for a fixed-price proposal**
+```
+/hours-estimator I need to quote a fixed price for building a patient onboarding portal — user registration, document upload, admin review workflow. Team knows React and .NET. No existing similar work.
+```
+> Recommends Monte Carlo or PERT-P90 for fixed-price contracts. Returns a risk-adjusted range with the minimum commitment level for a fixed price and a change-order threshold. Warns explicitly if the P/O ratio is too high to commit with confidence.
+
+---
+
+**#90 — Estimate a scope change**
+```
+The ALPHA client wants to add SSO with Azure AD to the existing app. Original estimate was 0 — it wasn't in scope. How many hours does this add?
+```
+> Estimates the delta effort using PERT, identifies integration risks with the existing codebase, and generates a change request estimate section. Flags if the scope change affects the critical path.
+
+---
+
+**#91 — Calibrate estimation accuracy**
+```
+/hours-estimator calibrate ALPHA
+```
+> Reads the project's historical estimates vs actuals from ADO and logs. Calculates the team's calibration factor (e.g., "your estimates run 35% under actual"). Recommends the adjustment multiplier to apply to all future estimates for this team.
+
+---
+
+**#92 — Estimate for a team with no velocity history**
+```
+Estimate a greenfield data migration project — 500k records, 12 source tables, 8 target tables, business rules in a 40-page spec document. Team is new, no history.
+```
+> Uses Analogous Estimation + Reference Class Forecasting (industry benchmarks for data migration projects). Applies a higher uncertainty buffer. Returns a wide range with an explicit explanation of why the P90 should be the commitment baseline.
+
+---
+
+**#93 — Convert story points to hours for a budget**
+```
+The ALPHA backlog has 180 story points remaining. The team's average velocity is 22 points/sprint with 2-week sprints and a 5-person team. Convert this to hours and budget.
+```
+> Uses Story Points + Velocity to project remaining effort in hours and cost. Shows the calculation, identifies velocity risk factors, and provides a confidence range based on velocity variance.
+
+---
+
+## 15. KPI Design & Project Health
+
+*Expert KPI framework design and quantitative health diagnosis — DORA, EVM, OKRs, Flow metrics, Agile health.*
+*Use `/kpi-advisor` directly or let `/tdm` route naturally with "KPIs", "metrics", "health", "indicators".*
+
+---
+
+**#94 — Define a KPI framework for a new project**
+```
+/kpi-advisor define ALPHA
+```
+> Reads the project's business objective, team size, methodology, and ADO configuration. Designs a 3-tier KPI framework: Tier 1 (executive, max 5), Tier 2 (TDM daily), Tier 3 (team internal). Every KPI has formula, data source, RAG thresholds, and measurement frequency. Identifies what's measurable today vs. what requires setup.
+
+---
+
+**#95 — Full quantitative health diagnosis**
+```
+/kpi-advisor health BETA
+```
+> Pulls current data from ADO, EVM, Outlook, and project logs. Calculates every KPI across 6 categories (Delivery, Quality, Flow, DORA, Stakeholder, Team Health). Returns: executive scorecard with trend arrows, detailed metrics per category, active early-warning combos, and prioritized recommendations.
+
+---
+
+**#96 — Quick early-warning scan**
+```
+/kpi-advisor alert ALPHA
+```
+> Runs a targeted check for the 5 early-warning combos: Cliff Sprint, Tech Debt Bomb, Communication Collapse, Scope Creep Spiral, and Team Burnout. Reports only active alerts — no output if all is green. Designed for a fast daily check.
+
+---
+
+**#97 — Translate a project goal into OKRs**
+```
+/kpi-advisor okr ALPHA "We need to deliver a high-quality platform the client adopts with confidence by end of Q3"
+```
+> Converts the qualitative objective into 3 measurable Key Results with current values, ambitious targets, and due dates. Includes calibration note (OKRs should be ~70% achievable, not 100%).
+
+---
+
+**#98 — Identify why a key metric is deteriorating**
+```
+Our CPI has been below 0.85 for the last 3 sprints in BETA. Why is this happening and what do we do?
+```
+> Distinguishes between an estimation problem (CPI was low from sprint 1) vs. an execution problem (CPI dropped after a good start). Calculates ETC and EAC to quantify the budget impact. Recommends specific corrective actions tied to the root cause.
+
+---
+
+**#99 — Report KPIs to a client**
+```
+I have a steering committee call with the ALPHA client in 2 days. Which metrics should I show them and what does the data say?
+```
+> Selects the Tier 1 KPIs appropriate for an executive audience (max 5-6). Calculates current values, trend vs. last period, and a 2-sentence narrative per metric. Returns a dashboard-ready summary the TDM can use directly in the call.
+
+---
+
+**#100 — Identify measurement gaps**
+```
+BETA has been running for 3 months but we've never formally measured anything. What KPIs are we blind to and how do we fix it?
+```
+> Audits what data is available in ADO, EVM records, Outlook, and logs. Lists KPIs that can be measured immediately, KPIs that need 1-4 weeks of baseline data, and KPIs that require tooling setup (test coverage tracking, deployment frequency, DORA logging). Produces a 30-day measurement enablement plan.
+
+---
+
 ## Quick reference — intents by category
 
 **`/tdm` always works.** Direct commands are shortcuts for when you already know what you want.
@@ -823,7 +941,14 @@ Estimate the effort for adding a real-time notification module to ALPHA. It wasn
 | Analyze a problem | "Why has [PROJECT] been missing its sprint commitments?" | `/problem-solve` |
 | Handle a scope change | "The client wants to add [feature] — analyze the impact" | `/scope-change` |
 | Review budget (EVM) | "Run the EVM analysis for [PROJECT]" | `/budget-review` |
-| Estimate effort | "Estimate the effort for adding [feature] to [PROJECT]" | `/time-estimate` |
+| Estimate effort (quick, 3-point) | "Estimate the effort for adding [feature] to [PROJECT]" | `/time-estimate` |
+| Estimate effort (expert, with ranges) | "Estimate the hours for [feature] — fixed price context, team knows the stack" | `/hours-estimator` |
+| Calibrate estimation accuracy | "How accurate have our estimates been in [PROJECT]?" | `/hours-estimator calibrate [CODE]` |
+| Convert story points to hours | "Convert ALPHA's remaining backlog to hours and budget" | `/hours-estimator [CODE]` |
+| Define KPI framework | "Define KPIs for [PROJECT]" | `/kpi-advisor define [CODE]` |
+| Quantitative health diagnosis | "Give me the full health diagnosis for [PROJECT] with metrics" | `/kpi-advisor health [CODE]` |
+| Early-warning scan | "Check for any early warning signals in [PROJECT]" | `/kpi-advisor alert [CODE]` |
+| Define OKRs | "Turn our project goal into OKRs with measurable key results" | `/kpi-advisor okr [CODE] "[goal]"` |
 | Document a decision | "Document our decision to use [technology] for [PROJECT]" | `/decision-log` |
 | Find a contact | "Find [person]'s email" | `/contacts` |
 | Set a reminder | "Remind me to [action] on [date]" | `/remind` |
