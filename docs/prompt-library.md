@@ -706,7 +706,70 @@ Update my profile — I now also manage the GAMMA project and my new client cont
 
 ---
 
-## 12. Project Management Process
+## 12. Document Import
+
+*Import any document into a project folder. Extraction is done without AI — Python libraries handle PDF, Word, Excel, PowerPoint, and CSV directly.*
+*The assistant only calls AI if the document is a scanned PDF with no extractable text.*
+
+---
+
+**#81 — Import a PDF into a project**
+```
+Import this PDF into ALPHA: C:\Users\Giovanny\Downloads\requirements.pdf
+```
+> Extracts all text and tables from the PDF, converts to Markdown, auto-detects category (reports/meetings/decisions/risks/retrospectives), saves to `projects/ALPHA/[category]/YYYY-MM-DD-requirements.md`. Logs the import in the project activity log.
+
+---
+
+**#82 — Import a Word document as meeting notes**
+```
+Import C:\Users\Giovanny\Downloads\kickoff-minutes.docx into ALPHA as meeting notes
+```
+> Extracts headings, paragraphs, and tables from the Word file. Saves to `projects/ALPHA/meetings/`. The filename contains "kickoff" so category is auto-detected as `meetings`.
+
+---
+
+**#83 — Import an Excel file into a project**
+```
+Import C:\Users\Giovanny\Downloads\risk-register.xlsx into BETA
+```
+> Converts every sheet into a Markdown table. Saves to `projects/BETA/risks/` (filename contains "risk"). Each sheet becomes a `## Sheet Name` section.
+
+---
+
+**#84 — Import a PowerPoint as a report**
+```
+Import C:\Users\Giovanny\Downloads\quarterly-review.pptx into ALPHA as a report
+```
+> Extracts text from each slide and speaker notes. Saves to `projects/ALPHA/reports/`. Slide titles become `## Slide N: Title` headings.
+
+---
+
+**#85 — Import with explicit category override**
+```
+Import C:\Users\Giovanny\Downloads\vendor-proposal.pdf into ALPHA — category: decisions
+```
+> Overrides auto-detection and saves to `projects/ALPHA/decisions/`.
+
+---
+
+**#86 — List all documents imported into a project**
+```
+List all documents imported into ALPHA
+```
+> Shows all Markdown files in meetings/, decisions/, risks/, reports/, and retrospectives/ organized by category.
+
+---
+
+**#87 — Import a scanned PDF (with AI fallback)**
+```
+Import C:\Users\Giovanny\Downloads\signed-contract.pdf into ALPHA
+```
+> Attempts text extraction. If the PDF is scanned (no extractable text), the assistant reports `⚠️ scanned PDF` and asks whether to process it with AI before continuing.
+
+---
+
+## 13. Project Management Process
 
 *Commands that handle PM artifacts — retrospectives, decisions, estimates. Ask `/tdm` directly or invoke the command.*
 
@@ -774,6 +837,8 @@ Estimate the effort for adding a real-time notification module to ALPHA. It wasn
 | Software architecture decision | "Microservices or modular monolith for our 8-person team?" | `/sw-architect decide` |
 | Threat model a system | "Run a threat model on our [system]" | `/sw-architect security` |
 | Plan a migration | "Help us move from monolith to microservices" | `/sw-architect migrate` |
+| Import a document into a project | "Import [file] into [PROJECT]" | `/import-doc [CODE]` |
+| List imported documents | "List all documents in [PROJECT]" | `/import-doc list [CODE]` |
 | Add a new capability | "I need a script that does [description]" | `/new-skill` |
 
 ---

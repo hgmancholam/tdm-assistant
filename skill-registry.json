@@ -118,6 +118,17 @@
       "description": "Expert software architect — evaluates and designs systems using industry-proven patterns (DDD, microservices, event-driven, CQRS, C4); consults Martin Fowler, AWS Well-Architected, OWASP and other authorities before recommending",
       "createdDate": "2026-06-17",
       "createdBy": "system"
+    },
+    {
+      "name": "doc-import",
+      "type": "python",
+      "path": ".agents/skills/projects/doc-import.py",
+      "command": "/import-doc",
+      "description": "Import documents (PDF, Word, Excel, PowerPoint, CSV) into a project, convert to Markdown without AI, and categorize into meetings/decisions/risks/reports/retrospectives",
+      "formats": [".pdf", ".docx", ".xlsx", ".pptx", ".csv", ".txt", ".md"],
+      "requires": ["pdfplumber", "pypdf", "python-docx", "python-pptx", "openpyxl"],
+      "createdDate": "2026-06-18",
+      "createdBy": "system"
     }
   ]
 }

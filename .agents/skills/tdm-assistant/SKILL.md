@@ -73,19 +73,34 @@ python --version
 
 #### B. Paquetes Python (pip)
 
+Verificar todos los paquetes requeridos de una vez:
+
 ```powershell
-pip show pandas matplotlib openpyxl anthropic 2>&1
+pip show pandas matplotlib openpyxl anthropic pdfplumber pypdf python-docx python-pptx 2>&1
 ```
 
-Si alguno falta (no aparece en el output de `pip show`):
+Paquetes requeridos y su uso:
+
+| Paquete | Propósito |
+|---------|-----------|
+| `pandas` | Analytics — tablas, datos de sprint |
+| `matplotlib` | Analytics — gráficos de velocidad, EVM |
+| `openpyxl` | Analytics — reportes Excel + leer .xlsx |
+| `anthropic` | Automatizaciones avanzadas (runner_api.py) |
+| `pdfplumber` | Importar PDF — extracción de texto y tablas |
+| `pypdf` | Importar PDF — fallback si pdfplumber falla |
+| `python-docx` | Importar Word (.docx) |
+| `python-pptx` | Importar PowerPoint (.pptx) |
+
+Si alguno falta (no aparece en `pip show`), instalar todos de una vez:
 
 ```powershell
 pip install -r .agents/skills/analytics/requirements.txt
 ```
 
-Verificar que la instalación terminó sin errores. Si falla, mostrar el error y sugerir:
-- `pip install --user -r .agents/skills/analytics/requirements.txt` (sin permisos admin)
-- O activar un virtualenv primero
+Verificar que la instalación terminó sin errores. Si falla por permisos:
+- Intentar: `pip install --user -r .agents/skills/analytics/requirements.txt`
+- O sugerir crear un virtualenv primero
 
 #### C. PowerShell 7+ (pwsh)
 
@@ -472,6 +487,7 @@ Regla: si existe un skill especializado para la tarea → cargarlo y ejecutarlo.
 | "nuevo skill" / "crea un script" / "necesito una automatización nueva" | COMMAND | `.claude/commands/new-skill.md` |
 | "automatiza" / "programa tarea" / "Task Scheduler" | COMMAND | `.claude/commands/automate.md` |
 | "memoria" / "memory" / "comprime contexto" / "sync-context" | COMMAND | `.claude/commands/memory.md` |
+| "importa" / "import" / "sube el documento" / "convierte a markdown" / "carga el PDF" / "carga el Word" / "carga el Excel" / "qué documentos tiene" / "listar docs" | COMMAND | `.claude/commands/import-doc.md` |
 | "prompt" / "ayúdame a escribir un prompt" / "improve this prompt" / "fix this prompt" | PROMPT_HELP | `.agents/skills/prompt-engineer/SKILL.md` |
 | "arquitectura de software" / "microservices" / "monolith" / "ADR" / "deuda técnica" / "migración" / "threat model" / "escalabilidad" | SW_ARCHITECT | `.agents/skills/sw-architect/SKILL.md` |
 | "arquitectura de AI" / "RAG" / "fine-tuning" / "LLM" / "multi-agent" / "evals" / "MLOps" / "vector database" / "embeddings" | AI_ARCHITECT | `.agents/skills/ai-architect/SKILL.md` |
