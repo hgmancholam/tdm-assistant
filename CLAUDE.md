@@ -106,94 +106,13 @@ Key files:
 | `.env` | `ASSISTANT_NAME` and `USER_NICKNAME` variables |
 | `.agents/skills/tdm-assistant/SKILL.md` | Full agent behavior definition |
 
-## Slash Commands (`.claude/commands/`)
+## Slash Commands
 
-Commands are Markdown files that Claude Code loads as `/command-name`.
+All commands live in `.claude/commands/` as Markdown files invocable as `/command-name`. Categories: TDM core (`/tdm`, `/brief`, `/quick-draft`, `/priorities`, `/remind`), Email & Calendar (`/email-*`, `/agenda`, `/calendar-manage`, `/contacts`), Projects (`/projects`, `/new-project`, `/project-agent`, `/projects-digest`, `/automate`), ADO (`/ado-*`), PM (`/project-plan`, `/status-report`, `/risk-register`, `/budget-review`, `/time-estimate`, `/stakeholder-update`, `/problem-solve`, `/retrospective`, `/scope-change`, `/decision-log`), Analysis (`/agile-advisor`, `/ai-architect`, `/sw-architect`), Meta (`/new-skill`).
 
-### TDM Assistant
-| Command | Purpose |
-|---------|---------|
-| `/tdm` | Main entry point — natural language, routes to all skills |
-| `/brief` | Morning briefing: agenda + emails + projects + reminders + priorities |
-| `/quick-draft` | Draft any communication (email, update, escalation, follow-up) |
-| `/priorities` | View and manage current top priorities |
-| `/remind` | Create and manage personal reminders |
+## Python Analytics
 
-### Email & Calendar
-| Command | Purpose |
-|---------|---------|
-| `/email-triage` | Inbox review with urgency classification |
-| `/email-search` | Search emails by keyword, sender, or subject |
-| `/email-send` | Draft and send an email |
-| `/email-reply` | Find, draft, and send a reply |
-| `/email-move` | Move an email to a folder |
-| `/agenda` | Daily/weekly calendar briefing with meeting prep |
-| `/calendar-manage` | Create events, recurring meetings, respond to invitations |
-| `/contacts` | Search, view, and manage Outlook contacts |
-
-### Projects
-| Command | Purpose |
-|---------|---------|
-| `/projects` | List all projects with status |
-| `/new-project` | Create a new project workspace |
-| `/project-agent CODE task` | Project data agent — logs, notes, reports, syncs |
-| `/projects-digest` | Daily consolidated summary of all active projects |
-| `/automate <action> [CODE]` | Manage periodic automations via Windows Task Scheduler |
-
-### Azure DevOps
-| Command | Purpose |
-|---------|---------|
-| `/ado-backlog` | Backlog review and grooming |
-| `/ado-sprint-plan` | Sprint planning, review, and close |
-| `/ado-board` | Kanban board audit and WIP analysis |
-| `/ado-dashboard` | Text dashboard: burndown, velocity, metrics |
-| `/ado-work-item` | Create, update, triage work items |
-| `/ado-dependencies` | Dependency map and blocker tracking |
-| `/ado-roadmap` | Multi-team delivery roadmap |
-| `/ado-metrics` | Velocity, cycle time, lead time, flow metrics |
-| `/ado-team-setup` | Team and iteration path configuration audit |
-| `/ado-query` | Natural language → WIQL queries |
-
-### Project Management
-| Command | Purpose |
-|---------|---------|
-| `/project-plan` | Generate project plan with WBS and milestones |
-| `/status-report` | Weekly/monthly status report |
-| `/risk-register` | Risk identification and prioritization |
-| `/budget-review` | EVM budget analysis |
-| `/time-estimate` | Three-point estimation |
-| `/stakeholder-update` | Draft stakeholder communications |
-| `/problem-solve` | Root cause analysis and action plan |
-| `/retrospective` | Agile retrospective facilitation |
-| `/scope-change` | Change request with impact analysis |
-| `/decision-log` | Document decisions with context and rationale |
-
-### Analysis
-| Command | Purpose |
-|---------|---------|
-| `/agile-advisor CODE` | Expert agile/TDM analysis of a project |
-| `/ai-architect [action] [topic]` | AI & agentic architecture expert — evaluate, design, decide, compare, evals, security |
-| `/sw-architect [action] [topic]` | Software architecture expert — evaluate, design, ADR, debt, security, migrate |
-
-### Self-Evolution
-| Command | Purpose |
-|---------|---------|
-| `/new-skill [description]` | Create a new skill on demand — PowerShell, Python, or command |
-
-## Python Analytics (`.agents/skills/analytics/`)
-
-Python is used for tasks where it clearly wins over PowerShell: data analysis, charts, Excel/PDF generation, and programmatic API calls.
-
-| Script | Purpose |
-|--------|---------|
-| `velocity_chart.py` | Sprint velocity + commitment ratio chart (PNG) |
-| `evm_report.py` | EVM metrics (CPI, SPI, EAC, VAC) + chart |
-| `excel_report.py` | Full Excel status report (Summary, Sprints, Risks, Actions) |
-| `runner_api.py` | Automation runner using Anthropic SDK (alternative to runner.ps1) |
-
-Install dependencies: `pip install -r .agents/skills/analytics/requirements.txt`
-
-PowerShell stays as the tool for: Outlook COM, Windows Task Scheduler, file I/O, and all native Windows automation.
+Scripts in `.agents/skills/analytics/`: `velocity_chart.py` (sprint velocity), `evm_report.py` (EVM: CPI/SPI/EAC), `excel_report.py` (full Excel report), `runner_api.py` (Anthropic SDK automation runner). Install: `pip install -r .agents/skills/analytics/requirements.txt`. PowerShell handles Outlook COM, Task Scheduler, and file I/O.
 
 ## Memory Architecture
 
@@ -214,21 +133,13 @@ Backend is configured via `MEMORY_BACKEND` env var (default: `file`). Future opt
 
 ## Agent Design Principles
 
-- **`.agents/skills/tdm-assistant/`** — Main agent behavior definition (SKILL.md)
-- **`.agents/skills/outlook/`** — PowerShell scripts using Outlook COM; each script accepts params and outputs JSON
-- **`.agents/skills/projects/`** — PowerShell scripts for project data I/O (logs, notes, settings files)
-- **`.agents/skills/analytics/`** — Python scripts for data analysis, charts, Excel reports
-- **`.agents/skills/skill-builder/`** — Meta-skill definition for creating new skills on demand
-- **`.agents/skills/runner.ps1`** — invoked by Task Scheduler; runs a task via Claude CLI
-- **`.agents/skills/runner_api.py`** — alternative runner using Anthropic SDK for richer automations
-- **`.agents/skills/scheduler.ps1`** — registers/removes/lists tasks in Windows Task Scheduler
-- **ADO commands** — use MCP tools directly (no local scripts needed)
-- **`skill-registry.json`** — inventory of all skills; updated by `/new-skill`
-- Always read environment variables at runtime; never hardcode credentials
-- Per-project ADO config and automations live in `project.settings`; global automations in `automations.json`
-- All scripts output JSON; PowerShell uses `@{} | ConvertTo-Json`, Python uses `json.dumps()`
+Scripts accept params and output JSON (`@{} | ConvertTo-Json` in PS, `json.dumps()` in Python). Read credentials from `.env` or `project.settings` at runtime — never hardcode. ADO commands use MCP tools directly (no local scripts). `skill-registry.json` tracks all skills and is updated by `/new-skill`. Per-project ADO config in `project.settings`; global automations in `automations.json`.
 
 ## User Context
 
 The user (Harol) is a TDM and PM at Arroyo Consulting (harol.manchola@arroyoconsulting.net). Communications should be professional but direct — match the tone of a senior technical delivery manager. ADO queries default to the current sprint unless otherwise specified.
+
+## Response Style
+
+Be concise: bullets over paragraphs, results first, no filler phrases or pleasantries. For exports (status reports, emails, stakeholder updates), use full professional prose.
 
