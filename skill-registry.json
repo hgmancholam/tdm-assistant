@@ -91,6 +91,33 @@
       "description": "Automation runner using Anthropic SDK (richer alternative to runner.ps1)",
       "createdDate": "2026-06-17",
       "createdBy": "system"
+    },
+    {
+      "name": "prompt-engineer",
+      "type": "skill",
+      "path": ".agents/skills/prompt-engineer/SKILL.md",
+      "command": "/prompt-help",
+      "description": "Expert prompt engineer — writes and improves prompts, returns master prompt ready to copy-paste",
+      "createdDate": "2026-06-17",
+      "createdBy": "system"
+    },
+    {
+      "name": "ai-architect",
+      "type": "skill",
+      "path": ".agents/skills/ai-architect/SKILL.md",
+      "command": "/ai-architect",
+      "description": "Expert AI and agentic systems architect — evaluates LLM selection, RAG, multi-agent patterns, evals, MLOps and AI governance; consults authoritative industry sources before recommending",
+      "createdDate": "2026-06-17",
+      "createdBy": "system"
+    },
+    {
+      "name": "sw-architect",
+      "type": "skill",
+      "path": ".agents/skills/sw-architect/SKILL.md",
+      "command": "/sw-architect",
+      "description": "Expert software architect — evaluates and designs systems using industry-proven patterns (DDD, microservices, event-driven, CQRS, C4); consults Martin Fowler, AWS Well-Architected, OWASP and other authorities before recommending",
+      "createdDate": "2026-06-17",
+      "createdBy": "system"
     }
   ]
 }

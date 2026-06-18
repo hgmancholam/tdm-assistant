@@ -25,6 +25,8 @@ This is Harol's personal assistant system — a Claude Code-based workspace that
   outlook/                # Outlook Desktop COM scripts (email, calendar, contacts)
   projects/               # Project data management scripts (logs, notes, settings)
   agile-advisor/          # Agile Coach + TDM analysis skill
+  ai-architect/           # AI & agentic architecture expert skill
+  sw-architect/           # Software architecture expert skill
   runner.ps1              # Task Scheduler runner (executes tasks via claude CLI)
   scheduler.ps1           # Registers/removes/lists Windows Task Scheduler tasks
 
@@ -170,6 +172,8 @@ Commands are Markdown files that Claude Code loads as `/command-name`.
 | Command | Purpose |
 |---------|---------|
 | `/agile-advisor CODE` | Expert agile/TDM analysis of a project |
+| `/ai-architect [action] [topic]` | AI & agentic architecture expert — evaluate, design, decide, compare, evals, security |
+| `/sw-architect [action] [topic]` | Software architecture expert — evaluate, design, ADR, debt, security, migrate |
 
 ### Self-Evolution
 | Command | Purpose |

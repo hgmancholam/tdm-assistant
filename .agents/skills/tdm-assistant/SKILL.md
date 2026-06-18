@@ -191,12 +191,15 @@ Con el perfil cargado, analizar el input para determinar qué hacer:
 | "crea evento" / "programa reunión" / "acepta/rechaza invitación" | CALENDAR_MANAGE | Gestión de eventos |
 | "sprint" / "backlog" / "board" / "ADO" | ADO | Routing a skill ADO |
 | "draft" / "borrador" / "redacta" / "ayúdame a escribir" | DRAFT | Quick draft |
+| "prompt" / "ayúdame a escribir un prompt" / "cómo le pido" / "improve this prompt" / "fix this prompt" | PROMPT_HELP | Invocar `/prompt-help` |
 | "recuérdame" / "remind me" / "no olvides" | REMINDER | Crear recordatorio |
 | "prioridades" / "priorities" / "en qué me enfoco" | PRIORITIES | Ver/actualizar prioridades |
 | "qué debo hacer" / "qué sigue" / "cómo priorizo" | ADVISORY | Recomendación proactiva |
 | "actualiza mi perfil" / "update profile" | PROFILE | Actualizar sección del perfil |
 | "setup" / "primera vez" | ONBOARDING | Reconstruir perfil |
 | "help" / "ayuda" / "qué puedes hacer" | HELP | Mostrar capacidades |
+| "arquitectura de software" / "diseña el sistema" / "microservices" / "monolith" / "ADR" / "deuda técnica" / "migración" / "threat model" / "escalabilidad" / "patrones de diseño" | SW_ARCHITECT | Invocar `/sw-architect` |
+| "arquitectura de AI" / "RAG" / "fine-tuning" / "LLM" / "agente" / "multi-agent" / "evals" / "MLOps" / "vector database" / "embeddings" / "modelo de lenguaje" | AI_ARCHITECT | Invocar `/ai-architect` |
 | Cualquier otra cosa | NATURAL | Interpretar y rutear |
 
 ---
@@ -609,6 +612,63 @@ python .agents/skills/memory/memory.py --op write --type priorities --content '{
 | 2 — Comprimido | `projects/CODE/context.md`, `memory/weekly/` | Semanal / al cerrar sprint |
 | 3 — Reciente | `projects/CODE/logs/`, `reminders.json`, `priorities.json` | Diario / on-demand |
 | 4 — Sesión | `memory/last-session.md` | Al final de cada sesión |
+
+---
+
+## MODO SW_ARCHITECT — Decisiones de arquitectura de software
+
+Cuando el usuario pide análisis o consejo sobre arquitectura de software:
+
+1. Leer `.agents/skills/sw-architect/SKILL.md` para cargar el framework completo.
+2. Identificar la acción del usuario: `evaluate`, `design`, `decide`, `adr`, `debt`, `security`, `migrate`, o `compare`.
+3. Continuar exactamente como define ese SKILL.md.
+
+Triggers que activan este modo:
+- "¿deberíamos usar microservices o monolito?"
+- "evalúa nuestra arquitectura actual"
+- "necesito un ADR para la decisión de [tecnología]"
+- "¿cómo migramos de [X] a [Y]?"
+- "cuál es la deuda técnica más crítica que tenemos"
+- "haz un threat model de nuestro sistema"
+- "compara REST vs GraphQL para nuestro caso"
+
+---
+
+## MODO AI_ARCHITECT — Decisiones de arquitectura de IA
+
+Cuando el usuario pide análisis o consejo sobre sistemas de inteligencia artificial:
+
+1. Leer `.agents/skills/ai-architect/SKILL.md` para cargar el framework completo.
+2. Identificar la acción: `evaluate`, `design`, `decide`, `compare`, `evals`, o `security`.
+3. Continuar exactamente como define ese SKILL.md.
+
+Triggers que activan este modo:
+- "¿RAG o fine-tuning para este caso?"
+- "diseña un agente que haga [descripción]"
+- "evalúa nuestro pipeline de IA actual"
+- "¿qué framework de agentes deberíamos usar?"
+- "cómo diseñamos los evals para este sistema"
+- "hay riesgos de seguridad en nuestro sistema de IA"
+- "compara LangChain vs LlamaIndex para [caso de uso]"
+
+---
+
+## MODO PROMPT_HELP — Asistencia para escribir prompts
+
+Cuando el usuario pide ayuda para escribir o mejorar un prompt:
+
+1. Leer `.agents/skills/prompt-engineer/SKILL.md` para cargar el framework CRATE completo.
+2. Continuar exactamente como define ese SKILL.md (pasos 1–6).
+3. No intentar resolver por cuenta propia — el skill de prompt engineer tiene el proceso completo.
+
+Triggers que activan este modo:
+- "ayúdame a escribir un prompt"
+- "cómo le pido al asistente que..."
+- "improve this prompt: [texto]"
+- "este prompt no me da buenos resultados"
+- "escribe un master prompt para..."
+- "help me write a prompt for..."
+- "fix this prompt: [texto]"
 
 ---
 
