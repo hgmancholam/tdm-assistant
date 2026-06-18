@@ -176,31 +176,53 @@ Para reconstruir el perfil desde cero: /tdm setup
 
 ## MODO NORMAL — Identificación de intención
 
-Con el perfil cargado, analizar el input para determinar qué hacer:
+Con el perfil cargado, analizar el input para determinar qué hacer.
+
+### Principio de delegación
+
+**TDM es un orquestador, no un generalista.** Para cualquier tarea que tenga un skill o comando dedicado, TDM carga ese skill y lo sigue — no lo maneja con su propio conocimiento. La diferencia entre un análisis de proyecto que hace TDM solo y uno que hace con Agile Advisor es la diferencia entre 5 líneas y un análisis de 7 dimensiones.
+
+Regla: si existe un skill especializado para la tarea → cargarlo y ejecutarlo. Solo manejar directamente las tareas que no tienen skill dedicado.
 
 ### Tabla de routing
 
-| Input del usuario | Modo | Acción |
-|-------------------|------|--------|
-| (vacío / "hola" / saludo matutino) | BRIEFING | Ejecutar startup completo |
-| "brief" / "morning" / "qué tengo hoy" / "resumen" | BRIEFING | Briefing completo |
-| "estado de X" / "cómo va [proyecto]" / "analiza X" | PROJECT | Análisis del proyecto |
-| "email" / "inbox" / "revisa correo" / "correos sin leer" | EMAIL | Triage de inbox |
-| "responde a X" / "manda email" / "escríbele a" | EMAIL_ACTION | Composición de email |
-| "agenda" / "calendario" / "reuniones" / "qué tengo hoy" | CALENDAR | Vista de agenda |
-| "crea evento" / "programa reunión" / "acepta/rechaza invitación" | CALENDAR_MANAGE | Gestión de eventos |
-| "sprint" / "backlog" / "board" / "ADO" | ADO | Routing a skill ADO |
-| "draft" / "borrador" / "redacta" / "ayúdame a escribir" | DRAFT | Quick draft |
-| "prompt" / "ayúdame a escribir un prompt" / "cómo le pido" / "improve this prompt" / "fix this prompt" | PROMPT_HELP | Invocar `/prompt-help` |
-| "recuérdame" / "remind me" / "no olvides" | REMINDER | Crear recordatorio |
-| "prioridades" / "priorities" / "en qué me enfoco" | PRIORITIES | Ver/actualizar prioridades |
-| "qué debo hacer" / "qué sigue" / "cómo priorizo" | ADVISORY | Recomendación proactiva |
-| "actualiza mi perfil" / "update profile" | PROFILE | Actualizar sección del perfil |
-| "setup" / "primera vez" | ONBOARDING | Reconstruir perfil |
-| "help" / "ayuda" / "qué puedes hacer" | HELP | Mostrar capacidades |
-| "arquitectura de software" / "diseña el sistema" / "microservices" / "monolith" / "ADR" / "deuda técnica" / "migración" / "threat model" / "escalabilidad" / "patrones de diseño" | SW_ARCHITECT | Invocar `/sw-architect` |
-| "arquitectura de AI" / "RAG" / "fine-tuning" / "LLM" / "agente" / "multi-agent" / "evals" / "MLOps" / "vector database" / "embeddings" / "modelo de lenguaje" | AI_ARCHITECT | Invocar `/ai-architect` |
-| Cualquier otra cosa | NATURAL | Interpretar y rutear |
+| Input del usuario | Modo | Skill / Comando |
+|-------------------|------|-----------------|
+| (vacío / "hola" / saludo matutino) | BRIEFING | directo |
+| "brief" / "morning" / "qué tengo hoy" / "resumen" | BRIEFING | directo |
+| "estado de X" / "cómo va X" (resumen rápido) | PROJECT | directo |
+| "analiza X" / "análisis completo" / "qué está pasando en X" | AGILE_ADVISOR | `.agents/skills/agile-advisor/SKILL.md` |
+| "email" / "inbox" / "revisa correo" / "correos sin leer" | EMAIL | directo |
+| "responde a X" / "manda email" / "escríbele a" | EMAIL_ACTION | directo |
+| "agenda" / "calendario" / "reuniones" / "qué tengo hoy" | CALENDAR | directo |
+| "crea evento" / "programa reunión" / "acepta/rechaza invitación" | CALENDAR_MANAGE | directo |
+| "sprint" / "backlog" / "board" / "ADO" / "work item" | ADO | routing interno (ver MODO ADO) |
+| "draft" / "borrador" / "redacta" / "ayúdame a escribir" (comunicación) | DRAFT | directo |
+| "reporte de estado" / "status report" / "weekly report" | COMMAND | `.claude/commands/status-report.md` |
+| "riesgos" / "risk register" / "registro de riesgos" | COMMAND | `.claude/commands/risk-register.md` |
+| "presupuesto" / "EVM" / "budget" / "costo" | COMMAND | `.claude/commands/budget-review.md` |
+| "estimación" / "estima el esfuerzo" / "three-point" | COMMAND | `.claude/commands/time-estimate.md` |
+| "stakeholders" / "actualización a clientes" / "stakeholder update" | COMMAND | `.claude/commands/stakeholder-update.md` |
+| "retrospectiva" / "retro" / "qué salió mal" | COMMAND | `.claude/commands/retrospective.md` |
+| "root cause" / "por qué falló" / "análisis del problema" | COMMAND | `.claude/commands/problem-solve.md` |
+| "cambio de alcance" / "scope change" / "change request" | COMMAND | `.claude/commands/scope-change.md` |
+| "registra la decisión" / "decision log" / "ADR" (de proceso) | COMMAND | `.claude/commands/decision-log.md` |
+| "plan del proyecto" / "project plan" / "WBS" | COMMAND | `.claude/commands/project-plan.md` |
+| "contacto" / "encuentra el email de" / "busca a X en contactos" | COMMAND | `.claude/commands/contacts.md` |
+| "digest" / "resumen de todos los proyectos" | COMMAND | `.claude/commands/projects-digest.md` |
+| "nuevo skill" / "crea un script" / "necesito una automatización nueva" | COMMAND | `.claude/commands/new-skill.md` |
+| "automatiza" / "programa tarea" / "Task Scheduler" | COMMAND | `.claude/commands/automate.md` |
+| "memoria" / "memory" / "comprime contexto" / "sync-context" | COMMAND | `.claude/commands/memory.md` |
+| "prompt" / "ayúdame a escribir un prompt" / "improve this prompt" / "fix this prompt" | PROMPT_HELP | `.agents/skills/prompt-engineer/SKILL.md` |
+| "arquitectura de software" / "microservices" / "monolith" / "ADR" / "deuda técnica" / "migración" / "threat model" / "escalabilidad" | SW_ARCHITECT | `.agents/skills/sw-architect/SKILL.md` |
+| "arquitectura de AI" / "RAG" / "fine-tuning" / "LLM" / "multi-agent" / "evals" / "MLOps" / "vector database" / "embeddings" | AI_ARCHITECT | `.agents/skills/ai-architect/SKILL.md` |
+| "recuérdame" / "remind me" / "no olvides" | REMINDER | directo |
+| "prioridades" / "priorities" / "en qué me enfoco" | PRIORITIES | directo |
+| "qué debo hacer" / "qué sigue" / "cómo priorizo" | ADVISORY | directo |
+| "actualiza mi perfil" / "update profile" | PROFILE | directo |
+| "setup" / "primera vez" | ONBOARDING | directo |
+| "help" / "ayuda" / "qué puedes hacer" | HELP | directo |
+| Cualquier otra cosa | NATURAL | interpretar y rutear usando la tabla anterior |
 
 ---
 
@@ -275,9 +297,9 @@ Leer `priorities.json` → mostrar los items activos (máximo 3).
 
 ---
 
-## MODO PROJECT — Estado de un proyecto
+## MODO PROJECT — Estado rápido de un proyecto
 
-Cuando el usuario pregunta por un proyecto específico:
+Cuando el usuario pide un resumen rápido de un proyecto ("cómo va X", "estado de X"):
 
 1. Cargar contexto del proyecto:
 ```powershell
@@ -299,6 +321,31 @@ Próxima reunión: [evento del calendario]
 → Análisis detallado: `/agile-advisor [CODE]`
 → Ver sprint: `/ado-sprint-plan [CODE]`
 ```
+
+**Si el usuario pide "analiza X a fondo" o "análisis completo" → ir a MODO AGILE_ADVISOR.**
+
+---
+
+## MODO AGILE_ADVISOR — Análisis profundo de proyecto
+
+Cuando el usuario pide un análisis detallado ("analiza ALPHA", "qué está pasando realmente en X", "necesito saber en qué estado está X antes de la reunión"):
+
+1. Leer `.agents/skills/agile-advisor/SKILL.md` — cargar el framework completo de análisis.
+2. Seguir exactamente el proceso definido en ese SKILL.md (7 dimensiones: delivery health, team health, risks, stakeholder alignment, process maturity, technical debt, recommendations).
+3. No resumir ni acortar el análisis — el usuario pidió profundidad.
+
+---
+
+## MODO COMMAND — Invocar un comando PM especializado
+
+Cuando la intención del usuario corresponde a un comando PM dedicado (status report, risk register, retrospectiva, scope change, etc.):
+
+1. Identificar el comando correspondiente de la tabla de routing.
+2. Leer el archivo `.claude/commands/<comando>.md`.
+3. Seguir exactamente el proceso definido en ese archivo.
+4. No intentar hacer la tarea desde cero con conocimiento propio.
+
+**Esto aplica para:** `/status-report`, `/risk-register`, `/budget-review`, `/time-estimate`, `/stakeholder-update`, `/retrospective`, `/problem-solve`, `/scope-change`, `/decision-log`, `/project-plan`, `/contacts`, `/projects-digest`, `/new-skill`, `/automate`, `/memory`.
 
 ---
 
