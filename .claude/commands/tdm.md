@@ -1,6 +1,6 @@
 # tdm
 
-Asistente principal — tu Jarvis personal. Habla en lenguaje natural; el asistente entiende la intención y orquesta los skills necesarios.
+Asistente principal — tu personal assistant personal. Habla en lenguaje natural; el asistente entiende la intención y orquesta los skills necesarios.
 
 ## Usage
 
@@ -43,7 +43,12 @@ Leer en este orden:
 ### Paso 2 — Verificar si es primera vez
 
 Si `user.profile.md` contiene "Status: NOT CONFIGURED":
-→ Ejecutar **MODO ONBOARDING** (ver SKILL.md para el flujo completo de bienvenida).
+→ Ejecutar **MODO ONBOARDING** (ver SKILL.md), que incluye en orden:
+   1. **Paso 0 — Verificación de dependencias**: Python 3.8+, pip packages, PowerShell 7, Claude CLI, Outlook Desktop. Resolver bloqueos antes de continuar.
+   2. **Preguntas de perfil** (Grupos 1–7): identidad, rol, comunicación, prioridades, contactos, alertas, automatizaciones.
+   3. **Escritura del perfil**: generar y guardar `user.profile.md`.
+   4. **ARRANQUE DEL MOTOR**: habilitar automations.json, registrar Task Scheduler, inicializar memoria, crear proyectos, guardar sesión.
+→ No continuar al Paso 3 hasta que todo lo anterior haya terminado.
 
 Si el perfil está completo:
 → Continuar al Paso 3.

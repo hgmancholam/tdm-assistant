@@ -89,7 +89,7 @@ Each project reads its own ADO credentials — no global ADO env vars to avoid c
 
 ## TDM Assistant — Main Agent
 
-The primary agent is `/tdm` — the user's personal Jarvis. It:
+The primary agent is `/tdm` — the user's personal assistant. It:
 
 - Loads `user.profile.md` and `.env` (ASSISTANT_NAME) at the start of every session
 - Runs an **onboarding flow** if the profile is not yet configured

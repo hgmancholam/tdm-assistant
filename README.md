@@ -1,6 +1,6 @@
 # PersonalAssistant
 
-A Claude Code-powered personal assistant for Technical Delivery Managers and Project Managers. Operates as an autonomous, proactive agent — your Jarvis — with full visibility into email, calendar, projects, and Azure DevOps. Speaks to you in natural language and orchestrates a growing library of skills to handle the daily load of a TDM.
+A Claude Code-powered personal assistant for Technical Delivery Managers and Project Managers. Operates as an autonomous, proactive agent — your personal assistant — with full visibility into email, calendar, projects, and Azure DevOps. Speaks to you in natural language and orchestrates a growing library of skills to handle the daily load of a TDM.
 
 > **Built on:** Claude Code · PowerShell (Outlook COM) · Python (analytics) · Azure DevOps MCP · Windows Task Scheduler
 
