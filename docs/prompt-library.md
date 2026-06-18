@@ -1,6 +1,6 @@
 # TDM Assistant — Prompt Library
 
-> 77 real-world prompts you can use with `/tdm`, `/ai-architect`, `/sw-architect`, and `/prompt-help` across your first three months.
+> 80 real-world prompts you can use with `/tdm` across your first three months.
 > All inputs are natural language — no syntax to memorize.
 > Copy them as-is or adapt them to your context.
 
@@ -8,13 +8,17 @@
 
 ## How to use this
 
-Type any of these directly in Claude Code as part of the `/tdm` command, or just paste them in your conversation with the assistant. The assistant routes them to the right skill automatically.
+**`/tdm` is your universal entry point.** You don't need to know which skill handles what — just describe what you want and the assistant routes it to the right specialized skill automatically.
 
 ```
 /tdm What's on my plate today?
 /tdm How is ALPHA doing?
-/tdm Draft a status update for the ALPHA executives — we're behind by one sprint
+/tdm Analyze ALPHA thoroughly — I have a steering committee meeting next week
+/tdm The client wants to add real-time notifications — analyze the scope change
+/tdm Should we use microservices or a modular monolith for this team?
 ```
+
+Direct commands (`/agile-advisor`, `/status-report`, `/ai-architect`, etc.) are **shortcuts** — use them when you already know exactly which skill you want. Both paths give you the same specialized result.
 
 ---
 
@@ -214,7 +218,7 @@ Is ALPHA going to make the go-live date?
 ```
 Analyze ALPHA thoroughly — I have a steering committee meeting next week and I need to know what I'm walking into
 ```
-> Runs the full Agile Advisor analysis: delivery health, team health, risks, stakeholder alignment, process maturity.
+> Routes to Agile Advisor automatically (7 dimensions: delivery health, team health, risks, stakeholder alignment, process maturity, technical debt, recommendations). Different from #19 — this is depth, not a summary.
 
 ---
 
@@ -702,38 +706,78 @@ Update my profile — I now also manage the GAMMA project and my new client cont
 
 ---
 
-## Quick reference — intents by category
+## 12. Project Management Process
 
-| If you want to... | Command | Say something like... |
-|-------------------|---------|----------------------|
-| Start your day | `/tdm` | "What's on my plate today?" |
-| Get a project status | `/tdm` | "How is [PROJECT] doing?" |
-| Find out what's at risk | `/tdm` | "Which of my projects is most at risk?" |
-| Draft any communication | `/tdm` or `/quick-draft` | "Draft a [type] for [audience] about [topic]" |
-| Handle your inbox | `/tdm` or `/email-triage` | "Review my inbox and tell me what needs attention" |
-| Schedule something | `/tdm` or `/calendar-manage` | "Set up a [meeting type] with [people] on [when]" |
-| Log activity | `/tdm` or `/project-agent` | "Log that we completed the integration work in BETA today" |
-| Set a reminder | `/remind` | "Remind me to [action] on [date/time]" |
-| Set priorities | `/priorities` | "My priorities this week are: [list]" |
-| Analyze a project deeply | `/agile-advisor` | "Analyze [PROJECT] thoroughly" |
-| Generate a report | `/tdm` | "Generate the weekly status report for [PROJECT]" |
-| Add a new capability | `/new-skill` | "I need a skill that does [description]" |
-| Catch up after absence | `/tdm` | "Catch me up — I was out for [N] days" |
-| Check memory state | `/memory` | "Show me the memory status" |
-| Write a better prompt | `/prompt-help` | "Help me write a prompt for [task]" |
-| Fix a prompt that isn't working | `/prompt-help` | "Improve this prompt: [paste it]" |
-| Evaluate an AI system | `/ai-architect evaluate` | "Our RAG pipeline is slow and inconsistent" |
-| Design an agentic solution | `/ai-architect design` | "I need an agent that does [description]" |
-| Decide RAG vs fine-tuning | `/ai-architect decide` | "Should we use RAG or fine-tuning for [use case]?" |
-| Evaluate a software architecture | `/sw-architect evaluate` | "Our API is struggling to scale — diagnose it" |
-| Generate an ADR | `/sw-architect decide` or `/sw-architect adr` | "We chose [technology] — document the decision" |
-| Threat model a system | `/sw-architect security` | "Run a threat model on our [system]" |
-| Plan a migration | `/sw-architect migrate` | "Help us move from monolith to microservices" |
+*Commands that handle PM artifacts — retrospectives, decisions, estimates. Ask `/tdm` directly or invoke the command.*
 
 ---
 
-> **Tip:** You don't need to use the command prefix every time.
-> In an active session, just type naturally — the assistant maintains context and routes automatically.
+**#78 — Run a retrospective**
+```
+ALPHA just closed Sprint 12. Facilitate a retrospective — what went well, what didn't, and what's the one process change we should make.
+```
+> Routes to the Retrospective skill. Reads sprint data, meeting notes, and logs. Returns: what went well (evidence-based), root cause of the top issue (5-why), one change with a measurable success criterion, one thing to stop doing.
+
+---
+
+**#79 — Document a decision**
+```
+Document the decision to move ALPHA's infrastructure to Azure Kubernetes Service. We chose it over ECS for better multi-cloud flexibility and team familiarity with Kubernetes.
+```
+> Creates a structured decision record: decision, context, options considered, rationale, trade-offs, and consequences. Saves to `projects/ALPHA/decisions/`.
+
+---
+
+**#80 — Estimate effort for a new feature**
+```
+Estimate the effort for adding a real-time notification module to ALPHA. It wasn't in the original scope. Use three-point estimation.
+```
+> Applies three-point estimation (optimistic / most likely / pessimistic) and returns a range, expected duration, confidence level, and key assumptions.
+
+---
+
+## Quick reference — intents by category
+
+**`/tdm` always works.** Direct commands are shortcuts for when you already know what you want.
+
+| If you want to... | Say to `/tdm`... | Direct shortcut |
+|-------------------|-----------------|-----------------|
+| Start your day | "What's on my plate today?" | `/brief` |
+| Quick project status | "How is [PROJECT] doing?" | — |
+| Deep project analysis (7 dimensions) | "Analyze [PROJECT] thoroughly" | `/agile-advisor [CODE]` |
+| Cross-project risk radar | "Which of my projects is most at risk?" | — |
+| Catch up after absence | "Catch me up — I was out for [N] days" | — |
+| Handle your inbox | "Review my inbox" | `/email-triage` |
+| Draft any communication | "Draft a [type] for [audience] about [topic]" | `/quick-draft` |
+| Schedule a meeting | "Set up a [meeting type] with [people] on [when]" | `/calendar-manage` |
+| Log activity on a project | "Log that we completed [X] in [PROJECT] today" | `/project-agent [CODE]` |
+| ADO sprint status | "What's the status of the current sprint in [PROJECT]?" | `/ado-sprint-plan [CODE]` |
+| ADO backlog review | "How many items are ready for the next sprint in [PROJECT]?" | `/ado-backlog [CODE]` |
+| ADO metrics & velocity | "Show me the velocity trend for [PROJECT] over the last 6 sprints" | `/ado-metrics [CODE]` |
+| Generate status report | "Generate the weekly status report for [PROJECT]" | `/status-report` |
+| Review risks | "Which risks in [PROJECT] have no mitigation plan?" | `/risk-register` |
+| Run a retrospective | "Facilitate a retrospective for [PROJECT] Sprint [N]" | `/retrospective` |
+| Analyze a problem | "Why has [PROJECT] been missing its sprint commitments?" | `/problem-solve` |
+| Handle a scope change | "The client wants to add [feature] — analyze the impact" | `/scope-change` |
+| Review budget (EVM) | "Run the EVM analysis for [PROJECT]" | `/budget-review` |
+| Estimate effort | "Estimate the effort for adding [feature] to [PROJECT]" | `/time-estimate` |
+| Document a decision | "Document our decision to use [technology] for [PROJECT]" | `/decision-log` |
+| Find a contact | "Find [person]'s email" | `/contacts` |
+| Set a reminder | "Remind me to [action] on [date]" | `/remind` |
+| Set priorities | "My priorities this week are: [list]" | `/priorities` |
+| Memory / compress context | "Compress ALPHA's logs into a context summary" | `/memory sync-context [CODE]` |
+| Write or fix a prompt | "Help me write a prompt for [task]" | `/prompt-help` |
+| Evaluate an AI system | "Our RAG pipeline is slow and inconsistent — evaluate it" | `/ai-architect evaluate` |
+| Design an AI agent | "Design an agent that does [description]" | `/ai-architect design` |
+| AI architecture decision | "Should we use RAG or fine-tuning for [use case]?" | `/ai-architect decide` |
+| Evaluate software architecture | "Our API is struggling to scale — diagnose it" | `/sw-architect evaluate` |
+| Software architecture decision | "Microservices or modular monolith for our 8-person team?" | `/sw-architect decide` |
+| Threat model a system | "Run a threat model on our [system]" | `/sw-architect security` |
+| Plan a migration | "Help us move from monolith to microservices" | `/sw-architect migrate` |
+| Add a new capability | "I need a script that does [description]" | `/new-skill` |
+
+---
+
+> **Tip:** When a response feels too short or too generic, the issue is almost always the routing — say "analyze" instead of "how is", or "facilitate a retrospective" instead of "what went wrong." The more specific the intent, the deeper the skill invoked.
 >
-> **Tip:** Use `/prompt-help` whenever you feel like the assistant is giving you generic or incomplete answers.
-> A better-structured prompt is almost always the fix.
+> **Tip:** Use `/prompt-help` to get a master prompt for any task where you want consistent, high-quality output every time.
