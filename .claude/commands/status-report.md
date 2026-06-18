@@ -1,6 +1,6 @@
 # status-report
 
-Generate a professional HTML project status report for stakeholder distribution via email.
+Generate a formal project status report for stakeholder distribution via email.
 
 ## Usage
 
@@ -15,133 +15,103 @@ Generate a professional HTML project status report for stakeholder distribution 
 3. Generate the HTML report (see template below)
 4. Show a Markdown preview to the user for review/edits
 5. On confirmation, ask: **"Send via email or save to file?"**
-   - **Email**: invoke `/email-send` flow with the generated HTML — subject must be plain ASCII
+   - **Email**: invoke `/email-send` flow — subject must be plain ASCII, no emojis
    - **File**: save to `projects/<CODE>/reports/status-<date>.html`
 
 ## HTML Report Template
 
-Generate this exact HTML structure. Table-based, Outlook-compatible — no flexbox, grid, or border-radius.
+Format as a formal business document — the kind a senior consultant sends.
+No icons. No colored banners. No metric badges. No decorative elements.
+Structure through bold section headers, a single ruled line, and a clean table.
 
 ```html
 <html>
 <head><meta charset="UTF-8"></head>
 <body style="font-family:Calibri,Arial,sans-serif;font-size:11pt;color:#1a1a1a;margin:0;padding:0;background:#ffffff;">
-
-<!-- HEADER -->
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr><td style="background:#003366;color:#ffffff;padding:14px 22px;">
-    <span style="font-size:14pt;font-weight:bold;">[PROJECT NAME] - Project Status</span><br>
-    <span style="font-size:9pt;color:#c8d8e8;">
-      [Period] &nbsp;|&nbsp; Prepared by Harol Manchola, Technical Delivery Manager
-    </span>
-  </td></tr>
-</table>
+  <tr><td style="padding:28px 32px;max-width:680px;">
 
-<!-- BODY -->
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr><td style="padding:20px 22px;">
+    <!-- Report header (text, no banner) -->
+    <p style="margin:0 0 4px;font-size:13pt;font-weight:bold;">[PROJECT NAME] &#8212; Project Status</p>
+    <p style="margin:0 0 20px;font-size:10pt;color:#555555;">[Period] | Prepared by Harol Manchola, Technical Delivery Manager | Arroyo Consulting</p>
 
-    <!-- SPRINT -->
-    <p style="margin:0 0 6px;font-size:10pt;font-weight:bold;text-transform:uppercase;color:#003366;border-bottom:1px solid #d0d7de;padding-bottom:4px;">Sprint</p>
-    <p style="margin:0 0 14px;">[Sprint name] &nbsp;|&nbsp; [Start] &#8211; [End] &nbsp;|&nbsp; Day [N] of [Total] ([%] elapsed)</p>
+    <!-- Sprint + Status summary -->
+    <p style="margin:0 0 6px;"><strong>Sprint:</strong> [Sprint name] | [Start] &#8211; [End] | Day [N] of [Total] ([%] elapsed)</p>
+    <p style="margin:0 0 20px;"><strong>Status:</strong> [GREEN / YELLOW / RED] &#8212; [One-line justification]</p>
 
-    <!-- OVERALL STATUS -->
-    <p style="margin:0 0 6px;font-size:10pt;font-weight:bold;text-transform:uppercase;color:#003366;border-bottom:1px solid #d0d7de;padding-bottom:4px;">Overall Status</p>
+    <!-- Metrics (inline text, not badges) -->
+    <p style="margin:22px 0 8px;font-weight:bold;border-bottom:1px solid #cccccc;padding-bottom:4px;">SPRINT METRICS</p>
     <p style="margin:0 0 14px;">
-      <!-- Use one badge -->
-      <span style="background:#1a7a1a;color:#ffffff;padding:3px 10px;font-size:9pt;font-weight:bold;">GREEN</span>
-      <!-- or -->
-      <span style="background:#e67700;color:#ffffff;padding:3px 10px;font-size:9pt;font-weight:bold;">YELLOW</span>
-      <!-- or -->
-      <span style="background:#cc0000;color:#ffffff;padding:3px 10px;font-size:9pt;font-weight:bold;">RED</span>
-      &nbsp; [One-line justification]
+      Total: <strong>[N]</strong> &nbsp;&nbsp;
+      Closed: <strong>[N] ([%])</strong> &nbsp;&nbsp;
+      In Progress: <strong>[N] ([%])</strong> &nbsp;&nbsp;
+      Not Started: <strong>[N] ([%])</strong>
     </p>
 
-    <!-- METRICS -->
-    <p style="margin:0 0 6px;font-size:10pt;font-weight:bold;text-transform:uppercase;color:#003366;border-bottom:1px solid #d0d7de;padding-bottom:4px;">Sprint Metrics</p>
-    <table cellpadding="0" cellspacing="6" border="0" style="margin:6px 0 14px;">
-      <tr>
-        <td style="background:#eef2f7;padding:10px 16px;text-align:center;min-width:70px;">
-          <div style="font-size:18pt;font-weight:bold;color:#003366;">[N]</div>
-          <div style="font-size:8pt;color:#777777;">Total Items</div>
-        </td>
-        <td style="background:#eef2f7;padding:10px 16px;text-align:center;min-width:70px;">
-          <div style="font-size:18pt;font-weight:bold;color:#1a7a1a;">[N]</div>
-          <div style="font-size:8pt;color:#777777;">Closed ([%])</div>
-        </td>
-        <td style="background:#eef2f7;padding:10px 16px;text-align:center;min-width:70px;">
-          <div style="font-size:18pt;font-weight:bold;color:#e67700;">[N]</div>
-          <div style="font-size:8pt;color:#777777;">In Progress ([%])</div>
-        </td>
-        <td style="background:#eef2f7;padding:10px 16px;text-align:center;min-width:70px;">
-          <div style="font-size:18pt;font-weight:bold;color:#999999;">[N]</div>
-          <div style="font-size:8pt;color:#777777;">Not Started ([%])</div>
-        </td>
+    <!-- Accomplishments -->
+    <p style="margin:22px 0 8px;font-weight:bold;border-bottom:1px solid #cccccc;padding-bottom:4px;">ACCOMPLISHMENTS</p>
+    <ul style="margin:0 0 14px;padding-left:20px;">
+      <li style="margin:4px 0;">[item]</li>
+    </ul>
+
+    <!-- Active Items -->
+    <p style="margin:22px 0 8px;font-weight:bold;border-bottom:1px solid #cccccc;padding-bottom:4px;">ACTIVE ITEMS</p>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin:0 0 14px;">
+      <tr style="border-bottom:2px solid #1a1a1a;">
+        <th style="text-align:left;padding:6px 10px;font-size:10pt;font-weight:bold;">ID</th>
+        <th style="text-align:left;padding:6px 10px;font-size:10pt;font-weight:bold;">Title</th>
+        <th style="text-align:left;padding:6px 10px;font-size:10pt;font-weight:bold;">Owner</th>
+      </tr>
+      <tr style="border-bottom:1px solid #d8d8d8;">
+        <td style="padding:5px 10px;font-size:10pt;">#[ID]</td>
+        <td style="padding:5px 10px;font-size:10pt;">[Title]</td>
+        <td style="padding:5px 10px;font-size:10pt;">[Owner]</td>
       </tr>
     </table>
 
-    <!-- ACCOMPLISHMENTS -->
-    <p style="margin:0 0 6px;font-size:10pt;font-weight:bold;text-transform:uppercase;color:#003366;border-bottom:1px solid #d0d7de;padding-bottom:4px;">Accomplishments</p>
-    <ul style="margin:4px 0 14px;padding-left:20px;">
-      <li style="margin:4px 0;">&#10003; [Item]</li>
+    <!-- Risks & Issues -->
+    <p style="margin:22px 0 8px;font-weight:bold;border-bottom:1px solid #cccccc;padding-bottom:4px;">RISKS &amp; ISSUES</p>
+    <ul style="margin:0 0 14px;padding-left:20px;">
+      <li style="margin:4px 0;"><strong>[HIGH / MEDIUM]:</strong> [Risk description] &#8212; [Action / Owner]</li>
     </ul>
 
-    <!-- ACTIVE ITEMS -->
-    <p style="margin:0 0 6px;font-size:10pt;font-weight:bold;text-transform:uppercase;color:#003366;border-bottom:1px solid #d0d7de;padding-bottom:4px;">Active Items</p>
-    <table width="100%" cellpadding="6" cellspacing="0" border="0" style="border-collapse:collapse;margin:6px 0 14px;">
-      <tr style="background:#003366;color:#ffffff;">
-        <th style="padding:7px 10px;text-align:left;font-size:9pt;font-weight:bold;">ID</th>
-        <th style="padding:7px 10px;text-align:left;font-size:9pt;font-weight:bold;">Title</th>
-        <th style="padding:7px 10px;text-align:left;font-size:9pt;font-weight:bold;">Owner</th>
-      </tr>
-      <tr style="background:#f4f6f9;">
-        <td style="padding:6px 10px;font-size:10pt;border-bottom:1px solid #e0e0e0;">#[ID]</td>
-        <td style="padding:6px 10px;font-size:10pt;border-bottom:1px solid #e0e0e0;">[Title]</td>
-        <td style="padding:6px 10px;font-size:10pt;border-bottom:1px solid #e0e0e0;">[Name]</td>
-      </tr>
-    </table>
-
-    <!-- RISKS & ISSUES -->
-    <p style="margin:0 0 6px;font-size:10pt;font-weight:bold;text-transform:uppercase;color:#003366;border-bottom:1px solid #d0d7de;padding-bottom:4px;">Risks &amp; Issues</p>
-    <p style="margin:4px 0;"><span style="color:#cc0000;font-weight:bold;">&#9888; HIGH:</span> [Risk description] &#8594; [Action/Owner]</p>
-    <p style="margin:4px 0 14px;"><span style="color:#e67700;font-weight:bold;">&#9888; MEDIUM:</span> [Risk description] &#8594; [Action/Owner]</p>
-
-    <!-- NEXT STEPS -->
-    <p style="margin:0 0 6px;font-size:10pt;font-weight:bold;text-transform:uppercase;color:#003366;border-bottom:1px solid #d0d7de;padding-bottom:4px;">Next Steps</p>
-    <ul style="margin:4px 0 14px;padding-left:20px;">
-      <li style="margin:4px 0;">&#8594; [Action — Owner — Target date]</li>
+    <!-- Next Steps -->
+    <p style="margin:22px 0 8px;font-weight:bold;border-bottom:1px solid #cccccc;padding-bottom:4px;">NEXT STEPS</p>
+    <ul style="margin:0 0 14px;padding-left:20px;">
+      <li style="margin:4px 0;">[Action &#8212; Owner &#8212; Target date]</li>
     </ul>
 
-    <!-- ADO LINK (optional) -->
-    <p style="margin:14px 0 0;font-size:9pt;color:#777777;">
-      Azure DevOps: <a href="[ADO URL]" style="color:#003366;">[ADO Project URL]</a>
+    <!-- ADO link (plain text, no decoration) -->
+    <p style="margin:20px 0 0;font-size:10pt;color:#555555;">
+      Azure DevOps: <a href="[URL]" style="color:#1a1a1a;">[Project URL]</a>
     </p>
 
+    <!-- Signature -->
+    <p style="margin:28px 0 2px;border-top:1px solid #cccccc;padding-top:12px;">Harol Manchola</p>
+    <p style="margin:0;font-size:10pt;color:#555555;">Technical Delivery Manager | Arroyo Consulting | harol.manchola@arroyoconsulting.net</p>
+
   </td></tr>
 </table>
-
-<!-- FOOTER -->
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr><td style="background:#f4f6f9;padding:10px 22px;border-top:2px solid #003366;">
-    <span style="font-size:9pt;color:#555555;">Harol Manchola &nbsp;|&nbsp; Technical Delivery Manager &nbsp;|&nbsp; Arroyo Consulting &nbsp;|&nbsp; harol.manchola@arroyoconsulting.net</span>
-  </td></tr>
-</table>
-
 </body>
 </html>
 ```
 
 ## Formatting rules — MANDATORY
 
-- **No emojis** — use HTML entities: `&#10003;` (✓), `&#9888;` (⚠), `&#8594;` (→), `&#8211;` (–)
-- **Email subject**: plain ASCII only — e.g., `GTTH Project Status - Touch Point | June 18, 2026`
-- **Colors**: `#003366` header/accent, `#1a7a1a` closed/done, `#e67700` in-progress/medium, `#cc0000` high-risk
-- **Table-based ONLY** — Outlook desktop uses Word renderer; no CSS grid, flexbox, or border-radius
-- Red status always requires an escalation path in the Risks section
+- **No icons, no emojis, no colored banners, no metric badges** — none, ever
+- **No inline color** in the body — text is `#1a1a1a`; only the subtitle/signature use `#555555` (muted)
+- **Status (GREEN/YELLOW/RED)**: plain bold text inline — no colored background or highlight behind it
+- **Section headers**: bold + bottom border rule only — that is the entire design system
+- **Tables**: black 2px bottom border on header row, thin grey `#d8d8d8` on data rows — no background fills
+- **Subject line for email distribution**: plain ASCII — e.g., `GTTH Project Status - Touch Point | June 18, 2026`
+- **Font**: Calibri 11pt — matches Outlook default
+- **Layout**: table-based (Outlook desktop uses Word renderer — no flexbox, grid, or border-radius)
+- `<meta charset="UTF-8">` always present
 
 ## Notes
 
 - Default period is current week unless specified
 - Keep accomplishments to the most impactful 3-5 items
-- Active items table should show only in-progress work items, not the full backlog
-- Tone: professional, senior TDM level — results-first, no filler
+- Active items: in-progress work only — not the full backlog
+- Red status always requires an escalation path in Risks
+- Tone: professional, senior TDM level — results first, no filler

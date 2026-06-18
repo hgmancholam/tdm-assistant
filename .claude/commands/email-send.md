@@ -19,129 +19,80 @@ Redacta y envía un email HTML profesional en nombre de Harol vía Outlook Deskt
 ## Behavior
 
 1. Si falta información (destinatario, asunto, contexto), preguntar antes de redactar
-2. **Generar siempre HTML profesional** — nunca texto plano (ver template y reglas abajo)
+2. Generar siempre HTML profesional — nunca texto plano (ver template y reglas abajo)
 3. Mostrar el borrador renderizado como Markdown para revisión
 4. Solo al confirmar, escribir el HTML a un archivo temporal y ejecutar el script
 5. Confirmar éxito con el resultado del script
 
 ## HTML Email Template
 
-**ALWAYS generate HTML. NEVER send plain text.**
-
-Use this exact structure (table-based, Outlook-compatible — no flexbox, no grid):
+The goal is a clean, formal document — the kind a senior consultant would write.
+NO icons. NO colored banners. NO badges. NO emojis. Minimal color.
+Structure comes from bold text, spacing, and simple ruled lines only.
 
 ```html
 <html>
 <head><meta charset="UTF-8"></head>
 <body style="font-family:Calibri,Arial,sans-serif;font-size:11pt;color:#1a1a1a;margin:0;padding:0;background:#ffffff;">
-
-<!-- HEADER -->
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr><td style="background:#003366;color:#ffffff;padding:14px 22px;">
-    <span style="font-size:14pt;font-weight:bold;">[TITLE]</span><br>
-    <span style="font-size:9pt;color:#c8d8e8;">[DATE / SUBTITLE / PREPARED BY]</span>
+  <tr><td style="padding:28px 32px;max-width:680px;">
+
+    <!-- Opening salutation -->
+    <p style="margin:0 0 14px;">Hi [Name / team],</p>
+
+    <!-- Opening paragraph -->
+    <p style="margin:0 0 14px;">[Main message or context.]</p>
+
+    <!-- Section header: bold + subtle underline rule -->
+    <p style="margin:22px 0 8px;font-weight:bold;border-bottom:1px solid #cccccc;padding-bottom:4px;">SECTION TITLE</p>
+
+    <!-- Bullet list -->
+    <ul style="margin:0 0 14px;padding-left:20px;">
+      <li style="margin:4px 0;">[item]</li>
+    </ul>
+
+    <!-- Inline data points (sprint info, dates, etc.) -->
+    <p style="margin:0 0 6px;"><strong>Sprint:</strong> [name] | [start] &#8211; [end] | Day [N] of [total] ([%] elapsed)</p>
+    <p style="margin:0 0 14px;"><strong>Status:</strong> [GREEN / YELLOW / RED] &#8212; [one-line justification]</p>
+
+    <!-- Simple table (active items, risks, decisions) -->
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;margin:0 0 14px;">
+      <tr style="border-bottom:2px solid #1a1a1a;">
+        <th style="text-align:left;padding:6px 10px;font-size:10pt;font-weight:bold;">Column A</th>
+        <th style="text-align:left;padding:6px 10px;font-size:10pt;font-weight:bold;">Column B</th>
+        <th style="text-align:left;padding:6px 10px;font-size:10pt;font-weight:bold;">Column C</th>
+      </tr>
+      <tr style="border-bottom:1px solid #d8d8d8;">
+        <td style="padding:5px 10px;font-size:10pt;">[value]</td>
+        <td style="padding:5px 10px;font-size:10pt;">[value]</td>
+        <td style="padding:5px 10px;font-size:10pt;">[value]</td>
+      </tr>
+    </table>
+
+    <!-- Closing line -->
+    <p style="margin:20px 0 0;">[Closing sentence — next steps, call to action, or pleasantry.]</p>
+
+    <!-- Signature -->
+    <p style="margin:24px 0 2px;border-top:1px solid #cccccc;padding-top:12px;">Harol Manchola</p>
+    <p style="margin:0;font-size:10pt;color:#555555;">Technical Delivery Manager | Arroyo Consulting</p>
+
   </td></tr>
 </table>
-
-<!-- BODY -->
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr><td style="padding:20px 22px;">
-
-    [SECTIONS — use patterns below]
-
-  </td></tr>
-</table>
-
-<!-- FOOTER -->
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-  <tr><td style="background:#f4f6f9;padding:10px 22px;border-top:2px solid #003366;">
-    <span style="font-size:9pt;color:#555555;">Harol Manchola &nbsp;|&nbsp; Technical Delivery Manager &nbsp;|&nbsp; Arroyo Consulting &nbsp;|&nbsp; harol.manchola@arroyoconsulting.net</span>
-  </td></tr>
-</table>
-
 </body>
 </html>
 ```
 
-### Section patterns
-
-**Section header:**
-```html
-<p style="margin:18px 0 6px;font-size:10pt;font-weight:bold;text-transform:uppercase;color:#003366;border-bottom:1px solid #d0d7de;padding-bottom:4px;">SECTION TITLE</p>
-```
-
-**Bullet list:**
-```html
-<ul style="margin:4px 0 12px;padding-left:20px;">
-  <li style="margin:4px 0;">Item text</li>
-</ul>
-```
-
-**Metric badges (sprint/status reports):**
-```html
-<table cellpadding="0" cellspacing="6" border="0" style="margin:8px 0 14px;">
-  <tr>
-    <td style="background:#eef2f7;padding:10px 16px;text-align:center;min-width:70px;">
-      <div style="font-size:18pt;font-weight:bold;color:#003366;">30</div>
-      <div style="font-size:8pt;color:#777777;">Total Items</div>
-    </td>
-    <td style="background:#eef2f7;padding:10px 16px;text-align:center;min-width:70px;">
-      <div style="font-size:18pt;font-weight:bold;color:#1a7a1a;">18</div>
-      <div style="font-size:8pt;color:#777777;">Closed (60%)</div>
-    </td>
-    <td style="background:#eef2f7;padding:10px 16px;text-align:center;min-width:70px;">
-      <div style="font-size:18pt;font-weight:bold;color:#e67700;">7</div>
-      <div style="font-size:8pt;color:#777777;">In Progress</div>
-    </td>
-    <td style="background:#eef2f7;padding:10px 16px;text-align:center;min-width:70px;">
-      <div style="font-size:18pt;font-weight:bold;color:#999999;">6</div>
-      <div style="font-size:8pt;color:#777777;">Not Started</div>
-    </td>
-  </tr>
-</table>
-```
-
-**Risk / alert inline:**
-```html
-<!-- High risk -->
-<p style="margin:4px 0;"><span style="color:#cc0000;font-weight:bold;">&#9888; HIGH:</span> Description of risk or blocker.</p>
-<!-- Medium risk -->
-<p style="margin:4px 0;"><span style="color:#e67700;font-weight:bold;">&#9888; MEDIUM:</span> Description of concern.</p>
-```
-
-**Status indicator (Green / Yellow / Red):**
-```html
-<span style="background:#1a7a1a;color:#ffffff;padding:2px 8px;font-size:9pt;font-weight:bold;">GREEN</span>
-<span style="background:#e67700;color:#ffffff;padding:2px 8px;font-size:9pt;font-weight:bold;">YELLOW</span>
-<span style="background:#cc0000;color:#ffffff;padding:2px 8px;font-size:9pt;font-weight:bold;">RED</span>
-```
-
-**Inline table (risks, decisions, items):**
-```html
-<table width="100%" cellpadding="6" cellspacing="0" border="0" style="border-collapse:collapse;margin:8px 0 14px;">
-  <tr style="background:#003366;color:#ffffff;">
-    <th style="padding:7px 10px;text-align:left;font-size:9pt;">Item</th>
-    <th style="padding:7px 10px;text-align:left;font-size:9pt;">Severity</th>
-    <th style="padding:7px 10px;text-align:left;font-size:9pt;">Action</th>
-    <th style="padding:7px 10px;text-align:left;font-size:9pt;">Owner</th>
-  </tr>
-  <tr style="background:#f4f6f9;">
-    <td style="padding:6px 10px;font-size:10pt;border-bottom:1px solid #e0e0e0;">...</td>
-    <td style="padding:6px 10px;font-size:10pt;border-bottom:1px solid #e0e0e0;color:#cc0000;font-weight:bold;">High</td>
-    <td style="padding:6px 10px;font-size:10pt;border-bottom:1px solid #e0e0e0;">...</td>
-    <td style="padding:6px 10px;font-size:10pt;border-bottom:1px solid #e0e0e0;">...</td>
-  </tr>
-</table>
-```
-
 ### Formatting rules — MANDATORY
 
-- **Subject line**: NO emojis — plain ASCII text only (e.g., `GTTH Project Status - Touch Point | June 18, 2026`)
-- **No emoji characters anywhere**: use HTML entities instead — `&#9888;` (⚠), `&#10003;` (✓), `&#8594;` (→), `&#8226;` (•)
-- **Colors**: header/accents `#003366`; closed/done `#1a7a1a`; in-progress `#e67700`; risk/high `#cc0000`; muted `#777777`
-- **Font**: Calibri 11pt body, 14pt header title, 10pt section titles (uppercase)
-- **Layout**: table-based ONLY — Outlook desktop uses Word renderer (flexbox/grid/border-radius NOT supported)
-- **Encoding**: `<meta charset="UTF-8">` must be present to avoid character corruption
+- **No icons, no emojis, no colored banners, no badges** — none, ever
+- **No inline color** except `#555555` for the signature subtitle — body text is always `#1a1a1a`
+- **Subject line**: plain ASCII text only — e.g., `GTTH Project Status - Touch Point | June 18, 2026`
+- **Structure via bold + ruled lines only** — section headers are `<strong>` or bold `<p>` with a bottom border
+- **Status (GREEN/YELLOW/RED)**: written as plain bold text inline — `<strong>Status: YELLOW</strong>` — no color behind it
+- **Tables**: black bottom border on header row, thin grey on data rows — no background fills, no colored headers
+- **Font**: Calibri 11pt — matches Outlook default, looks hand-authored
+- **Layout**: table-based (Outlook desktop uses Word renderer — no flexbox, grid, or border-radius)
+- **`<meta charset="UTF-8">`** always present to prevent character corruption
 
 ## Execution
 
@@ -158,7 +109,7 @@ pwsh -File ".agents/skills/outlook/send-email.ps1" `
 
 ## Draft preview format
 
-Show the draft as formatted Markdown (not raw HTML) so the user can review it easily:
+Show the draft as formatted Markdown before sending:
 
 ```
 Para:    ...

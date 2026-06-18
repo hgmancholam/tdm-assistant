@@ -1,6 +1,6 @@
 # email-reply
 
-Busca un email, redacta la respuesta en HTML profesional y la envía vía Outlook Desktop.
+Busca un email, redacta la respuesta HTML profesional y la envía vía Outlook Desktop.
 
 ## Usage
 
@@ -40,40 +40,44 @@ Busca un email, redacta la respuesta en HTML profesional y la envía vía Outloo
 
 ## HTML Reply Format
 
-Replies use a simpler template than full status reports — clean, professional, no heavy header.
+Replies must look like a human wrote them — clean, formal, no design elements.
+No icons. No colored sections. No badges. Just well-structured text.
 
 ```html
 <html>
 <head><meta charset="UTF-8"></head>
-<body style="font-family:Calibri,Arial,sans-serif;font-size:11pt;color:#1a1a1a;margin:0;padding:0;">
+<body style="font-family:Calibri,Arial,sans-serif;font-size:11pt;color:#1a1a1a;margin:0;padding:0;background:#ffffff;">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+  <tr><td style="padding:0 0 16px;">
 
-  <p style="margin:0 0 12px;">Hi [Name],</p>
+    <p style="margin:0 0 14px;">Hi [Name],</p>
 
-  <p style="margin:0 0 12px;">[Opening paragraph or direct answer]</p>
+    <p style="margin:0 0 14px;">[Main response or direct answer.]</p>
 
-  <!-- If listing items -->
-  <ul style="margin:4px 0 12px;padding-left:20px;">
-    <li style="margin:4px 0;">Item 1</li>
-    <li style="margin:4px 0;">Item 2</li>
-  </ul>
+    <!-- Use a bullet list only when listing multiple items -->
+    <ul style="margin:0 0 14px;padding-left:20px;">
+      <li style="margin:4px 0;">[item]</li>
+    </ul>
 
-  <p style="margin:0 0 12px;">[Closing line / next step]</p>
+    <p style="margin:0 0 14px;">[Closing line or next step.]</p>
 
-  <p style="margin:16px 0 4px;">Best regards,</p>
-  <p style="margin:0;font-weight:bold;">Harol Manchola</p>
-  <p style="margin:0;font-size:9pt;color:#555555;">Technical Delivery Manager &nbsp;|&nbsp; Arroyo Consulting</p>
+    <p style="margin:20px 0 2px;">Harol Manchola</p>
+    <p style="margin:0;font-size:10pt;color:#555555;">Technical Delivery Manager | Arroyo Consulting</p>
 
+  </td></tr>
+</table>
 </body>
 </html>
 ```
 
 ### Formatting rules — MANDATORY
 
-- **No emojis** anywhere in the reply — use plain text labels or HTML entities (`&#9888;` ⚠, `&#10003;` ✓, `&#8594;` →)
-- **Font**: Calibri 11pt — matches Outlook default, no visual mismatch with quoted thread
-- **Table-based layout only** if structured content is needed (Outlook Word renderer)
-- **`<meta charset="UTF-8">`** always present to prevent character corruption
-- Tone: professional, direct — adapt if client vs internal colleague
+- **No icons, no emojis, no color, no banners** — plain formatted text only
+- Use **bold** (`<strong>`) sparingly — only for a key term, a name, or a status word
+- If listing structured data, use a simple table: black bottom border on header, thin grey on rows, no fills
+- Font Calibri 11pt — looks native to Outlook, indistinguishable from a manually typed email
+- `<meta charset="UTF-8">` always present
+- Tone: professional, direct — adapt if client vs. internal colleague
 
 ## Draft preview format
 
