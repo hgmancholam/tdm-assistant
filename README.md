@@ -1,6 +1,6 @@
 # PersonalAssistant
 
-A Claude Code-powered personal assistant for Technical Delivery Managers and Project Managers. Operates as an autonomous, proactive agent — your personal assistant — with full visibility into email, calendar, projects, and Azure DevOps. Speaks to you in natural language and orchestrates a growing library of skills to handle the daily load of a TDM.
+A Claude Code-powered personal assistant for Technical Delivery Managers and Project Managers. Operates as an autonomous, proactive agent with full visibility into email, calendar, projects, and Azure DevOps. Understands natural language and orchestrates a growing library of skills to handle the daily load of a TDM.
 
 > **Built on:** Claude Code · PowerShell (Outlook COM) · Python (analytics) · Azure DevOps MCP · Windows Task Scheduler
 
@@ -11,12 +11,16 @@ A Claude Code-powered personal assistant for Technical Delivery Managers and Pro
 | Area | Capabilities |
 |------|-------------|
 | **Assistant** | Morning briefing, proactive alerts, priority tracking, reminders, smart drafts |
-| **Email** | Inbox triage, search, send, reply, move — all via Outlook Desktop COM |
+| **Email** | Inbox triage, search, send, reply, move — via Outlook Desktop COM |
 | **Calendar** | View agenda, create events, recurring meetings, accept/decline invitations |
-| **Projects** | Per-project workspace: logs, meeting notes, risks, decisions, reports |
+| **Projects** | Per-project workspace: logs, meeting notes, risks, decisions, reports, imported docs |
 | **Azure DevOps** | Sprint planning, backlog grooming, metrics, board audit, dependency tracking |
 | **PM** | Status reports, risk register, EVM budget review, retrospectives, scope changes |
 | **Analytics** | Velocity charts, EVM calculations, Excel status reports (Python) |
+| **Architecture** | AI architecture decisions, software architecture reviews, ADRs, threat models |
+| **Research** | Web search, multi-source research, document Q&A, page fetch |
+| **Prompt Engineering** | Write and optimize prompts with the CRATE framework |
+| **Token Optimization** | Compressed communication mode (~65% fewer output tokens) via `/caveman` |
 | **Self-evolution** | `/new-skill` creates new PowerShell or Python skills on demand |
 
 ---
@@ -29,7 +33,8 @@ A Claude Code-powered personal assistant for Technical Delivery Managers and Pro
 | Windows | 10 or 11 — required for Outlook COM automation |
 | Microsoft Outlook | Desktop app, open and signed in |
 | PowerShell | 7+ (`pwsh`) |
-| Python | 3.11+ (for analytics scripts) |
+| Python | 3.8+ (for analytics and memory service) |
+| Node.js | 18+ (for caveman skill) |
 | Azure DevOps MCP | Configured in Claude Code settings (for ADO commands) |
 
 ---
@@ -42,7 +47,6 @@ A Claude Code-powered personal assistant for Technical Delivery Managers and Pro
 git clone <repo-url>
 cd PersonalAssistant
 
-# Copy the env template and fill in your values
 Copy-Item .env.example .env
 ```
 
@@ -73,18 +77,39 @@ claude
 /tdm
 ```
 
-On first run, the assistant detects there is no user profile and starts an onboarding conversation. It will ask about your role, preferences, key contacts, and alert rules, then write `user.profile.md`. This takes about 5 minutes and only happens once.
+On first run, the assistant detects there is no user profile and starts an onboarding flow. **Before asking any profile questions, it verifies the full environment:**
+
+| Check | What it verifies |
+|-------|-----------------|
+| Python 3.8+ | `python --version` |
+| pip packages | `pandas`, `matplotlib`, `openpyxl`, `anthropic`, `pdfplumber`, `pypdf`, `python-docx`, `python-pptx` |
+| PowerShell 7+ | `pwsh --version` |
+| Claude CLI | `claude --version` (recommended — needed for Task Scheduler automations) |
+| Outlook Desktop | Runs a test calendar query via COM |
+
+Python, pip packages, PowerShell 7, and Outlook are blocking. Claude CLI is recommended but not required to proceed.
+
+After verification, the assistant walks through 7 groups of questions (identity, role, communication preferences, priorities, key contacts, alerts, automations), then:
+
+- Writes `user.profile.md`
+- Configures `automations.json` with your preferred briefing schedule
+- Registers tasks in Windows Task Scheduler
+- Creates project workspaces for any projects you mention
+- Initializes all memory layers
+
+The onboarding takes about 5 minutes and only runs once.
 
 ---
 
 ## Quick start
 
 ```
-/tdm                        # Morning briefing — agenda, emails, projects, reminders
-/tdm how is ALPHA doing?    # Natural language — routes to the right skill
-/tdm remind me to call Sarah tomorrow at 10am
-/tdm draft a status update for the ALPHA client
-/tdm what should I focus on right now?
+/tdm                                       # Morning briefing or natural language
+/tdm qué tengo hoy
+/tdm cómo va el proyecto ALPHA
+/tdm responde el email de John sobre el deadline
+/tdm recuérdame revisar el contrato mañana a las 10am
+/tdm qué debo hacer ahora
 ```
 
 ---
@@ -96,13 +121,13 @@ On first run, the assistant detects there is no user profile and starts an onboa
 | Command | What it does |
 |---------|-------------|
 | `/tdm [anything]` | Main entry point — natural language routing to all skills |
-| `/brief` | Full morning briefing: agenda + emails + projects + reminders + priorities |
+| `/tdm setup` | Re-run onboarding (rebuilds profile from scratch) |
+| `/tdm update profile — [change]` | Update a section of your profile |
+| `/brief` | Full morning briefing: agenda + urgent emails + project status + reminders + priorities |
+| `/brief quick` | Briefing without project status |
 | `/quick-draft [context]` | Draft any communication — email, escalation, status update, follow-up |
 | `/priorities` | View and manage your current top-5 priorities |
 | `/remind [text] [when]` | Create a reminder (persisted across sessions) |
-| `/memory status` | Inspect what the assistant knows — memory layers health check |
-| `/memory sync-context [CODE\|all]` | Compress project logs into a `context.md` summary |
-| `/memory weekly` | Generate this week's synthesis across all projects |
 
 ### Email & Calendar
 
@@ -126,6 +151,7 @@ On first run, the assistant detects there is no user profile and starts an onboa
 | `/new-project` | Create a new project workspace from template |
 | `/project-agent CODE [task]` | Manage a project — logs, notes, reports, sync |
 | `/projects-digest` | Consolidated daily summary of all active projects |
+| `/import-doc CODE --file "path"` | Import PDF, Word, PowerPoint, or Excel into a project folder |
 | `/automate [action] [CODE]` | Manage scheduled automations via Task Scheduler |
 
 ### Azure DevOps
@@ -139,13 +165,14 @@ On first run, the assistant detects there is no user profile and starts an onboa
 | `/ado-work-item` | Create, update, and triage work items |
 | `/ado-dependencies CODE` | Dependency map and blocker tracking |
 | `/ado-metrics CODE` | Velocity, cycle time, lead time reports |
+| `/ado-roadmap CODE` | Multi-team delivery roadmap |
+| `/ado-team-setup CODE` | Team and iteration path configuration audit |
 | `/ado-query [natural language]` | Convert plain English to WIQL queries |
 
 ### Project Management
 
 | Command | What it does |
 |---------|-------------|
-| `/agile-advisor CODE [focus]` | Expert agile + TDM analysis across 6 dimensions |
 | `/status-report CODE` | Weekly/monthly status report |
 | `/risk-register CODE` | Risk identification, scoring, and mitigation |
 | `/budget-review CODE` | EVM analysis: CPI, SPI, EAC, VAC |
@@ -153,6 +180,42 @@ On first run, the assistant detects there is no user profile and starts an onboa
 | `/retrospective CODE` | Agile retrospective facilitation |
 | `/scope-change CODE` | Change request with impact analysis |
 | `/problem-solve` | Root cause analysis and action plan |
+| `/time-estimate` | Three-point estimation |
+| `/project-plan CODE` | Generate project plan with WBS and milestones |
+| `/stakeholder-update CODE` | Draft stakeholder communications |
+
+### Analysis & Architecture
+
+| Command | What it does |
+|---------|-------------|
+| `/agile-advisor CODE [focus]` | Expert agile + TDM analysis across 6 dimensions (delivery, team, risks, stakeholders, process, AI-readiness) |
+| `/ai-architect [action] [topic]` | AI & agentic architecture — evaluate, design, decide, compare, evals, security |
+| `/sw-architect [action] [topic]` | Software architecture — evaluate, design, ADR, debt, security, migrate |
+| `/prompt-help [task]` | Write or optimize any prompt using the CRATE framework |
+
+### Research & Intelligence
+
+| Command | What it does |
+|---------|-------------|
+| `/web-search [query]` | Search the web and return a synthesized answer with sources |
+| `/research [topic]` | Multi-angle research with structured briefing across 2-3 sources |
+| `/page-fetch [url]` | Fetch and summarize a specific web page |
+
+### Memory
+
+| Command | What it does |
+|---------|-------------|
+| `/memory status` | Memory layers health check — what the assistant knows |
+| `/memory sync-context CODE` | Compress project logs into a `context.md` summary |
+| `/memory weekly` | Generate this week's synthesis across all active projects |
+
+### Token Optimization
+
+| Command | What it does |
+|---------|-------------|
+| `/caveman` | Compressed communication mode (~65% fewer output tokens). Professional emails and exported content always use full prose. |
+| `/caveman lite\|full\|ultra` | Switch intensity level |
+| `/caveman off` | Return to normal mode |
 
 ### Self-Evolution
 
@@ -167,17 +230,28 @@ On first run, the assistant detects there is no user profile and starts an onboa
 
 ```
 .claude/
-  commands/               ← Slash commands (Markdown files)
+  commands/               ← Slash commands (Markdown files, one per /command)
   settings.json           ← Permissions whitelist for script execution
 
 .agents/skills/
-  tdm-assistant/          ← Main agent brain (SKILL.md)
-  memory/                 ← Memory service — single abstraction for all storage
+  tdm-assistant/          ← Main agent brain (SKILL.md) — routing, onboarding, briefing
+  memory/                 ← Memory service — single abstraction for all storage (memory.py)
   outlook/                ← Outlook Desktop COM scripts (PowerShell → JSON)
   projects/               ← Project data I/O scripts (PowerShell → JSON)
-  analytics/              ← Python: charts, EVM, Excel reports
-  agile-advisor/          ← Agile Coach + TDM analysis framework
+  analytics/              ← Python: velocity charts, EVM, Excel reports
+  agile-advisor/          ← Agile Coach + TDM 6-dimension analysis framework
+  ai-architect/           ← AI & agentic architecture expert
+  sw-architect/           ← Software architecture expert (ADRs, threat models, migrations)
+  prompt-engineer/        ← Prompt optimization with CRATE framework
+  caveman/                ← Token optimization: compressed communication mode
+  mcp-builder/            ← Guide for building MCP servers (FastMCP / MCP SDK)
+  grill-with-docs/        ← Relentless design interview → ADRs and glossary
+  writing-plans/          ← Structured planning for complex writing tasks
+  subagent-driven-development/ ← Patterns for subagent orchestration
+  dispatching-parallel-agents/ ← Parallel agent dispatch patterns
+  find-skills/            ← Locate existing skills before creating new ones
   skill-builder/          ← Meta-skill: creates new skills on demand
+  skill-creator/          ← Alternative skill creation flow
   runner.ps1              ← Task Scheduler runner (CLI-based)
   scheduler.ps1           ← Registers/lists/removes scheduled tasks
 
@@ -191,9 +265,10 @@ projects/
     decisions/            ← Decision log
     risks/                ← Risk register
     reports/              ← Generated reports (Excel, PNG charts)
+    retrospectives/       ← Sprint retrospectives
 
 memory/
-  last-session.md         ← What was discussed in the last TDM session
+  last-session.md         ← What was discussed in the last session
   sessions/               ← Archived session files
   weekly/                 ← Weekly syntheses (weekly-YYYY-WW.md)
 
@@ -212,12 +287,12 @@ The assistant builds context over time through 4 layers, all accessed via a sing
 
 ```
 Layer 1 — Permanent     user.profile.md
-                         Your identity, preferences, contacts, alert rules.
-                         Set during onboarding. Update anytime with /tdm update profile
+                         Your identity, preferences, key contacts, alert rules.
+                         Set during onboarding. Update with: /tdm update profile
 
 Layer 2 — Compressed    projects/CODE/context.md
-                         Weekly synthesis of a project's state: sprint status,
-                         open risks, key decisions. Replaces reading 60+ raw logs.
+                         Weekly synthesis: sprint status, open risks, key decisions.
+                         Replaces reading 60+ raw logs per project.
                          Update with: /memory sync-context CODE
 
                          memory/weekly/weekly-YYYY-WW.md
@@ -225,39 +300,36 @@ Layer 2 — Compressed    projects/CODE/context.md
                          Update with: /memory weekly
 
 Layer 3 — Recent        projects/CODE/logs/YYYY-MM-DD.md
-                         Raw daily activity. The assistant reads only the last 3-7 days.
+                         Raw daily activity. Assistant reads last 3-7 days.
                          reminders.json / priorities.json — current operational state.
 
 Layer 4 — Session       memory/last-session.md
                          What was discussed in the previous session: actions taken,
-                         follow-ups, context to resume from. Auto-archived after each session.
+                         follow-ups, context to resume from. Auto-archived each session.
 ```
 
-**Startup reading strategy:** Layer 1 (always) + Layer 2 (always) + Layer 4 (always) + Layer 3 last 3-5 days only.
+**Startup reading order:** Layer 1 (always) → Layer 2 (always) → Layer 4 (always) → Layer 3 last 3–5 days.
 
-### Future-proof storage
-
-The memory service is an abstraction layer. The backend is configured via `MEMORY_BACKEND` in `.env`:
+The memory service is an abstraction layer. Backend configured via `MEMORY_BACKEND` in `.env`:
 
 | Value | Backend | Status |
 |-------|---------|--------|
-| `file` | Local Markdown + JSON files | ✅ Active |
+| `file` | Local Markdown + JSON | Active |
 | `sqlite` | SQLite local database | Planned |
 | `postgresql` | PostgreSQL | Planned |
 | `vector` | Vector database (semantic search) | Planned |
-
-To migrate: implement the new backend class in `memory.py`, register it, set the env var. Zero changes elsewhere.
 
 ---
 
 ## Outlook integration
 
-Email, calendar, and contacts use **Windows COM Automation** — no Azure app registration, no OAuth flow, no IT permissions required. Outlook Desktop must be open and signed in.
+Email, calendar, and contacts use **Windows COM Automation** — no Azure app registration, no OAuth, no IT permissions. Outlook Desktop must be open and signed in.
 
 ```powershell
 # All scripts accept parameters and output JSON
 pwsh -File ".agents/skills/outlook/get-inbox.ps1" -Count 20 -UnreadOnly
 pwsh -File ".agents/skills/outlook/send-email.ps1" -To "name@company.com" -Subject "..." -Body "..."
+pwsh -File ".agents/skills/outlook/get-calendar.ps1" -Days 7
 pwsh -File ".agents/skills/outlook/create-event.ps1" -Subject "Sprint Review" -StartTime "2026-06-20 14:00" -EndTime "2026-06-20 15:00"
 ```
 
@@ -265,7 +337,7 @@ pwsh -File ".agents/skills/outlook/create-event.ps1" -Subject "Sprint Review" -S
 
 ## Azure DevOps integration
 
-ADO is accessed via the **ADO MCP server** (`mcp__ado__*` tools) — no local scripts needed. Each project stores its own credentials in `project.settings` to prevent cross-project errors:
+ADO is accessed via the **ADO MCP server** (`mcp__ado__*` tools) — no local scripts needed. Each project stores its own credentials in `project.settings`:
 
 ```json
 {
@@ -289,9 +361,7 @@ Generate a PAT at `https://dev.azure.com/<org>/_usersSettings/tokens` with scope
 /new-project
 ```
 
-This creates a workspace under `projects/<CODE>/` with all required folders and a `project.settings` file. Fill in the settings file with your project details, ADO configuration, team, stakeholders, and communication preferences.
-
-To enable scheduled automations for a project:
+Creates a workspace under `projects/<CODE>/` with all required folders and a `project.settings` file. Fill in the ADO configuration, team, and stakeholders. To enable scheduled automations:
 
 ```
 /automate register CODE
@@ -299,26 +369,31 @@ To enable scheduled automations for a project:
 
 ---
 
-## Extending the system
+## Document import
 
-The assistant grows with you. To add a new capability:
+Import external documents into a project workspace with structure preservation:
+
+```
+/import-doc ALPHA --file "C:\Users\harol\Documents\proposal.docx"
+/import-doc ALPHA --file "report.pdf" --category meetings
+/import-doc list ALPHA
+```
+
+Supported formats: PDF (`.pdf`), Word (`.docx`), PowerPoint (`.pptx`), Excel (`.xlsx`).
+
+---
+
+## Extending the system
 
 ```
 /new-skill a script that downloads all attachments from a specific email thread and saves them to the project folder
 ```
 
-The skill builder will:
-1. Verify no existing skill already covers it
-2. Decide the right technology (PowerShell for Windows/Outlook, Python for data/APIs)
-3. Write the script following established conventions (params, JSON output, try/catch)
-4. Test it
-5. Register it in `skill-registry.json` and `CLAUDE.md`
+The skill builder verifies no existing skill covers it, picks the right technology (PowerShell for Windows/Outlook, Python for data/APIs), writes the script, tests it, and registers it in `skill-registry.json`.
 
 ---
 
 ## Scheduled automations
-
-The assistant can run tasks automatically via Windows Task Scheduler:
 
 ```
 /automate register-all     # Register all enabled automations
@@ -342,29 +417,16 @@ Global automations (`automations.json`):
 |-----------|-----------|
 | AI agent | Claude Code (Anthropic) |
 | Windows automation | PowerShell 7+ with Outlook COM |
-| Data analysis | Python 3.11+ (pandas, matplotlib, openpyxl) |
+| Data analysis | Python 3.8+ (pandas, matplotlib, openpyxl) |
 | ADO integration | ADO MCP server |
 | Scheduling | Windows Task Scheduler |
 | Memory storage | Local files (Markdown + JSON) — pluggable backend |
+| Token optimization | caveman skill (project-level, Node.js 18+) |
 | Advanced automations | Anthropic Python SDK (`runner_api.py`) |
-
----
-
-## Project structure reference
-
-```
-skill-registry.json    Inventory of all skills — updated by /new-skill
-user.profile.md        Your profile — built via /tdm onboarding
-reminders.json         Active reminders — managed by /remind
-priorities.json        Current priorities — managed by /priorities
-automations.json       Global automation schedule
-.env                   Environment variables (not committed)
-.env.example           Template for .env
-```
 
 ---
 
 ## Documentation
 
-Additional setup guides are in `docs/`:
+Additional setup guides in `docs/`:
 - `outlook-com-setup.md` — Outlook COM automation setup and troubleshooting
