@@ -7,10 +7,39 @@
       "Bash(pwsh -File .agents/skills/scheduler.ps1)",
       "Bash(python .agents/skills/analytics/*.py)",
       "Bash(python .agents/skills/memory/memory.py)",
-      "Bash(python .agents/skills/*/script.py)"
+      "Bash(python .agents/skills/*/script.py)",
+      "Bash(pwsh -File .agents/skills/memory/auto-commit-push.ps1)",
+      "Bash(pwsh -File .agents/skills/memory/sync-upstream.ps1)",
+      "Bash(pwsh -File .agents/skills/memory/post-tool-log.ps1)"
     ]
   },
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pwsh -File .agents/skills/memory/sync-upstream.ps1",
+            "shell": "powershell",
+            "timeout": 30,
+            "statusMessage": "Syncing from upstream..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "pwsh -File .agents/skills/memory/post-tool-log.ps1",
+            "shell": "powershell",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "matcher": "",
@@ -18,6 +47,13 @@
           {
             "type": "command",
             "command": "pwsh -File .agents/skills/memory/end-session.ps1"
+          },
+          {
+            "type": "command",
+            "command": "pwsh -File .agents/skills/memory/auto-commit-push.ps1",
+            "shell": "powershell",
+            "timeout": 30,
+            "statusMessage": "Saving changes to FRIDAY..."
           }
         ]
       }
