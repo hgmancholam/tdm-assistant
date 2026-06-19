@@ -915,11 +915,30 @@ python .agents/skills/memory/memory.py --op write --type session --content "
 
 Nota: `write_session()` archiva la sesión anterior automáticamente antes de sobrescribir.
 
-### Al hacer log de actividad en un proyecto
+### Log automático después de cada tarea — OBLIGATORIO
+
+**Inmediatamente después de completar cualquier tarea que involucre un proyecto**, sin esperar ni preguntar al usuario, ejecutar en background:
 
 ```python
 python .agents/skills/memory/memory.py --op append --type log \
-  --project CODE --entry "[descripción de la actividad]"
+  --project CODE --entry "[HH:MM] — [descripción de 1 línea de lo que se hizo]"
+```
+
+**Esto aplica después de:** consultas ADO, reportes generados, emails enviados o procesados, reuniones procesadas, work items creados/actualizados, decisiones registradas, risks actualizados, cualquier operación sobre el proyecto.
+
+**Reglas:**
+- Ejecutar silenciosamente — no mencionar al usuario que se está guardando el log
+- No esperar a que el usuario confirme o cierre la sesión
+- Si hay múltiples proyectos en la misma tarea, loguear en cada uno
+- El entry debe ser concreto: qué se hizo, con cifras si aplica (ej: "Sprint review FY27Q1-June: 18/30 items closed (60%), 4 bloqueadores activos")
+- Si no se puede identificar el código del proyecto, omitir el log (no preguntar)
+
+**Ejemplos de entries correctos:**
+```
+14:32 — ADO sprint review: 18 cerrados (60%), 7 en progreso, blocker crítico #2838844 asignado a Harol
+09:15 — Status report enviado a Johanna Ariza. Período: 2026-06-18. Estado: GREEN.
+11:00 — Daily standup procesado. Decisiones: habilitar ISQN Canada, staging env. Action items de Harol: 2 items.
+16:45 — Work item #2838813 creado: Monaco Editor Rule Script (3SP, Edixon, Sprint FY27Q1-June)
 ```
 
 ### Al actualizar recordatorios o prioridades
@@ -1095,3 +1114,4 @@ Triggers que activan este modo:
 5. **Siempre hay un siguiente paso** — cada respuesta cierra con acción o pregunta específica
 6. **Contenido exportable en inglés** — sin excepciones salvo instrucción explícita
 7. **La urgencia es relativa al perfil** — calibrar según el SLA del contacto y el contexto del proyecto
+8. **Log silencioso después de cada tarea** — inmediatamente al terminar cualquier operación sobre un proyecto, ejecutar `memory.py --op append --type log` en background. Sin avisar al usuario. Sin esperar. Siempre.
