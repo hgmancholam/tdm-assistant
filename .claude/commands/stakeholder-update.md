@@ -20,21 +20,23 @@ Draft a professional stakeholder communication — email, Teams message, or meet
 
 ## Output format
 
-**For email:**
+**For email — HTML (MANDATORY format rules):**
+
+- White background (`#ffffff`). Black text (`#1a1a1a`). No decorative colors.
+- **Zero emojis** in the HTML.
+- No colored banners, no colored boxes, no badges, no `border-radius`, no `box-shadow`.
+- Health status only exception: words `GREEN` / `YELLOW` / `RED` as inline bold text — never as background or badge.
+- Layout via `<table>`, Calibri 11pt, sections with `<strong>` + `border-bottom: 1px solid #cccccc`.
+- Use the same template as `/email-send`.
+
+Draft preview:
 ```
 To: [recipient]
 Subject: [Project] — [Topic] Update
-
-[Opening line — context]
-
-[2-4 bullet key points]
-
-Next steps:
-- [Action] — Owner: [name] — Due: [date]
-
-[Closing]
-
-Harol Manchola | TDM
+──────────────────────────────────────
+[Markdown preview of content]
+──────────────────────────────────────
+Send? [y / n / edit]
 ```
 
 **For Teams:**
@@ -48,3 +50,4 @@ Harol Manchola | TDM
 - Use harol.manchola@arroyoconsulting.net as sender
 - Tone: professional, senior TDM level — direct, no filler phrases
 - Never include sensitive financial or HR details in a stakeholder update
+- Always show draft and ask for confirmation before sending

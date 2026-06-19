@@ -36,40 +36,45 @@ Genera un resumen consolidado de todos los proyectos activos. Diseñado para eje
    pwsh -File ".agents/skills/outlook/get-inbox.ps1" -Count 30 -UnreadOnly
    ```
 
-6. Compilar el digest completo y enviarlo a Harol por email:
-   ```powershell
-   pwsh -File ".agents/skills/outlook/send-email.ps1" `
-     -To "harol.manchola@arroyoconsulting.net" `
-     -Subject "Daily Digest — [fecha]" `
-     -Body "[digest completo]"
-   ```
+6. Compilar el digest completo y enviarlo a Harol por email usando HTML profesional B&W (ver reglas abajo).
 
-## Output format
+## Output format (pantalla)
 
 ```
-# Daily Digest — [fecha]
-📋 Proyectos activos: X
+Daily Digest — [fecha]
+Projects active: X
 
-## [CÓDIGO] Nombre del Proyecto — 🟢 On Track
-**Sprint:** X% completado | **Bloqueadores:** 0
-**Hoy:** [reuniones del día]
-**Pendiente en email:** ninguno
+[CODE] Project Name — GREEN / YELLOW / RED
+Sprint: X% complete | Blockers: 0
+Today: [meetings]
+Email pending: none
 
-## [CÓDIGO] Otro Proyecto — 🟡 Atención
-**Sprint:** X% completado | **Bloqueadores:** 2
-**Hoy:** [reuniones]
-**Pendiente en email:** Email de [cliente] sin responder (hace 18h)
+[CODE] Other Project — YELLOW
+Sprint: X% complete | Blockers: 2
+Today: [meetings]
+Email pending: Email from [client] unanswered (18h ago)
 
 ---
-## 📅 Agenda del día
-[lista completa de reuniones de todos los proyectos]
+AGENDA
+[full meeting list]
 
-## 📧 Emails urgentes sin responder
-[emails de cualquier proyecto que requieren atención hoy]
+URGENT EMAILS
+[emails requiring attention today]
 ```
+
+## Email format — MANDATORY
+
+El email enviado debe seguir las mismas reglas que `/email-send`:
+
+- Fondo blanco (`#ffffff`). Texto negro (`#1a1a1a`). Sin colores decorativos.
+- **CERO emojis** en el HTML.
+- Sin banners, sin cajas con fondo de color, sin badges, sin `border-radius`.
+- Estado de salud se escribe como texto inline bold: `Status: GREEN`, `Status: YELLOW`, `Status: RED` — nunca como fondo o badge coloreado.
+- Layout `<table>`, fuente Calibri 11pt, secciones con `<strong>` + `border-bottom: 1px solid #cccccc`.
+- Subject: `Daily Digest — [fecha]` (ASCII puro, sin emojis).
 
 ## Notes
 
 - Se ejecuta automáticamente según `automations.json` → `daily-digest`
 - Si se ejecuta sin Outlook abierto, omite el envío de email y solo muestra el digest en pantalla
-- Semáforo: 🟢 = sin bloqueadores, sprint en tiempo | 🟡 = bloqueadores o sprint retrasado | 🔴 = escalación requerida
+- Semáforo: GREEN = sin bloqueadores, sprint en tiempo | YELLOW = bloqueadores o sprint retrasado | RED = escalación requerida
